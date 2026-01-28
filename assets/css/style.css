@@ -1,0 +1,697 @@
+/* =========================================
+   1. VARIABLES & RESET
+   ========================================= */
+:root {
+    --primary: #0f172a;    /* Dark Navy */
+    --accent: #f59e0b;     /* Orange */
+    --text-body: #475569;  /* Slate Gray */
+    --bg-light: #f8fafc;
+    --white: #ffffff;
+    
+    --font-heading: 'Outfit', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    
+    --container-width: 1240px;
+    --header-height: 90px;
+    --section-spacing: 120px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: var(--font-body);
+    color: var(--text-body);
+    line-height: 1.7;
+    background-color: var(--white);
+    overflow-x: hidden;
+}
+
+img { max-width: 100%; display: block; border-radius: 12px; }
+a { text-decoration: none; color: inherit; transition: 0.3s ease; }
+ul { list-style: none; padding: 0; margin: 0; }
+
+/* =========================================
+   2. TYPOGRAPHY & UTILS
+   ========================================= */
+.content-container {
+    width: 90%;
+    max-width: var(--container-width);
+    margin: 0 auto;
+}
+
+h1, h2, h3 { color: var(--primary); font-family: var(--font-heading); margin: 0 0 20px 0; line-height: 1.15; }
+h1 { font-size: 4.5rem; font-weight: 800; }
+h2 { font-size: 3rem; font-weight: 700; }
+h3 { font-size: 1.5rem; font-weight: 600; }
+p { font-size: 1.125rem; margin-bottom: 30px; }
+
+.section-label {
+    color: var(--accent); font-weight: 700; font-size: 0.875rem;
+    letter-spacing: 2px; text-transform: uppercase; display: block; margin-bottom: 15px;
+}
+
+/* =========================================
+   3. HEADER (Fixed & Spacious)
+   ========================================= */
+.main-header {
+    position: fixed; top: 0; left: 0; width: 100%; height: var(--header-height);
+    background: rgba(255,255,255,0.98); backdrop-filter: blur(10px);
+    z-index: 1000; border-bottom: 1px solid rgba(0,0,0,0.05);
+    display: flex; align-items: center;
+}
+
+.header-container {
+    width: 90%; max-width: var(--container-width); margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center;
+}
+
+.brand-logo { font-size: 1.6rem; font-family: var(--font-heading); font-weight: 800; color: var(--primary); }
+.logo-sub { color: var(--accent); }
+
+/* Navigation */
+.desktop-nav .nav-links { display: flex; gap: 40px; }
+.nav-links a { font-weight: 500; font-size: 1rem; color: var(--primary); padding: 30px 0; position: relative; }
+.nav-links a:hover, .nav-links a.active { color: var(--accent); }
+
+/* Dropdowns */
+.dropdown-trigger { position: relative; }
+.dropdown-menu {
+    position: absolute; top: 100%; left: 0; background: white;
+    width: 240px; padding: 15px 0; border-radius: 8px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    opacity: 0; visibility: hidden; transform: translateY(15px); transition: 0.3s;
+}
+.dropdown-trigger:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+.dropdown-menu a { display: block; padding: 12px 25px; }
+.dropdown-menu a:hover { padding-left: 30px; background: var(--bg-light); }
+
+/* Header Buttons */
+.header-actions { display: flex; align-items: center; gap: 25px; }
+.link-login { font-weight: 600; color: var(--primary); }
+.btn-donate {
+    background: var(--accent); color: white; padding: 12px 30px;
+    border-radius: 50px; font-weight: 700; font-family: var(--font-heading);
+}
+.mobile-menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; color: var(--primary); }
+
+/* =========================================
+   4. HERO SECTION (Fixed Typography & Contrast)
+   ========================================= */
+.hero-section {
+    position: relative;
+    height: 100vh;
+    min-height: 600px;
+    display: flex;
+    align-items: center;
+    color: white;
+    /* Pull behind the transparent header */
+    margin-top: calc(var(--header-height) * -1);
+    padding-top: var(--header-height);
+}
+
+.hero-bg {
+    position: absolute;
+    inset: 0;
+    /* Use a high-quality image */
+    background: url('https://images.unsplash.com/photo-1542744173-8e7e5341c12e?q=80&w=2000') no-repeat center center/cover;
+    z-index: 0;
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    /* MATHEMATICAL FIX: Stronger gradient for perfect text readability */
+    background: linear-gradient(
+        135deg, 
+        rgba(15, 23, 42, 0.95) 0%,  /* Deep Navy at 95% opacity */
+        rgba(15, 23, 42, 0.75) 60%, /* Fades slightly */
+        rgba(15, 23, 42, 0.40) 100%
+    );
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    width: 90%;
+    max-width: 900px; /* Constrain width for readability */
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left; /* Aligns with FocusPoint style */
+}
+
+/* Badge Styling */
+.hero-badge {
+    display: inline-block;
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(4px);
+    border-radius: 50px;
+    font-size: 0.85rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 30px;
+    color: var(--accent);
+}
+
+/* Heading Typography */
+.hero-content h1 {
+    color: white;
+    font-size: 4.5rem; /* Large and bold */
+    font-weight: 700;  /* Reduced from 800 for elegance */
+    line-height: 1.1;  /* Tight spacing */
+    letter-spacing: -1px;
+    margin-bottom: 24px; /* Mathematical spacing */
+}
+
+/* Paragraph Typography */
+.hero-content p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.25rem;
+    font-weight: 400;
+    line-height: 1.6;
+    margin-bottom: 40px;
+    max-width: 650px; /* Prevents text from stretching too wide */
+}
+
+/* Button Group */
+.btn-group {
+    display: flex;
+    gap: 20px;
+}
+
+/* RESPONSIVE FIXES */
+@media (max-width: 1024px) {
+    .hero-content h1 { font-size: 3.5rem; }
+}
+
+@media (max-width: 768px) {
+    .hero-section {
+        text-align: center; /* Center on mobile for balance */
+        padding: 140px 0 80px 0;
+        height: auto;
+    }
+    
+    .hero-content {
+        margin: 0 auto;
+    }
+    
+    .hero-content h1 {
+        font-size: 2.8rem;
+    }
+    
+    .hero-content p {
+        font-size: 1.1rem;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .btn-group {
+        justify-content: center;
+        flex-direction: column;
+    }
+    
+    .btn-primary, .btn-outline {
+        width: 100%;
+        text-align: center;
+    }
+}
+/* Buttons */
+.btn-group { display: flex; gap: 20px; }
+.btn-group.centered { justify-content: center; margin-top: 30px; }
+
+.btn-primary {
+    background: var(--accent); color: white; padding: 16px 40px;
+    border-radius: 6px; font-weight: 600; display: inline-block;
+}
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(245, 158, 11, 0.3); }
+
+.btn-outline {
+    border: 2px solid white; color: white; padding: 14px 40px;
+    border-radius: 6px; font-weight: 600; display: inline-block;
+}
+.btn-outline:hover { background: white; color: var(--primary); }
+
+.btn-outline-dark {
+    border: 2px solid var(--primary); color: var(--primary); padding: 14px 40px;
+    border-radius: 6px; font-weight: 600; display: inline-block;
+}
+.btn-outline-dark:hover { background: var(--primary); color: white; }
+
+/* =========================================
+   5. SECTIONS (FocusPoint Style)
+   ========================================= */
+.section-padding { padding: var(--section-spacing) 0; }
+.bg-light { background-color: var(--bg-light); }
+
+.split-layout {
+    display: flex; align-items: center; gap: 100px; /* Big gap for airy feel */
+}
+
+.text-column { flex: 1; }
+.image-column { flex: 1; position: relative; }
+
+/* Image Styling */
+.image-column img {
+    width: 100%; height: auto;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+    position: relative; z-index: 2;
+}
+
+/* Decorative Box behind image */
+.image-accent-box {
+    position: absolute; bottom: -30px; right: -30px;
+    width: 200px; height: 200px;
+    background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjIiIGZpbGw9IiNmNWZBNGIiIGZpbGwtb3BhY2l0eT0iMC4yIi8+PC9zdmc+') repeat;
+    z-index: 1;
+}
+.image-accent-box.left { right: auto; left: -30px; }
+
+/* Reorder for Zig-Zag */
+.reverse-desktop { flex-direction: row-reverse; }
+
+/* Stats & Features */
+.stats-grid {
+    display: flex; gap: 50px; margin: 30px 0 40px 0;
+    padding-top: 30px; border-top: 1px solid #e2e8f0;
+}
+.stat-item strong { display: block; font-size: 2.5rem; color: var(--accent); line-height: 1; font-family: var(--font-heading); }
+.stat-item span { font-size: 0.9rem; color: var(--text-body); font-weight: 500; }
+
+.founder-quote {
+    border-left: 4px solid var(--accent); padding-left: 20px;
+    font-style: italic; font-size: 1.1rem; color: var(--primary);
+    margin: 30px 0; font-weight: 500;
+}
+
+.feature-list li {
+    display: flex; gap: 15px; margin-bottom: 15px;
+}
+.feature-list i { color: var(--accent); margin-top: 5px; font-size: 1.2rem; }
+
+.link-arrow {
+    color: var(--primary); font-weight: 700; font-size: 1.1rem;
+    display: inline-flex; align-items: center; gap: 10px;
+}
+.link-arrow:hover { color: var(--accent); gap: 15px; }
+
+/* =========================================
+   6. CTA SECTION
+   ========================================= */
+.cta-section { padding: 120px 0; text-align: center; border-top: 1px solid #e2e8f0; }
+.center-text { max-width: 700px; margin: 0 auto; }
+
+/* =========================================
+   7. ANIMATIONS
+   ========================================= */
+.fade-in { opacity: 0; }
+.reveal-up { opacity: 0; transform: translateY(40px); transition: all 1s cubic-bezier(0.165, 0.84, 0.44, 1); }
+.reveal-up.active { opacity: 1; transform: translateY(0); }
+
+/* =========================================
+   8. MOBILE RESPONSIVENESS
+   ========================================= */
+@media (max-width: 1024px) {
+    :root { --container-width: 94%; --section-spacing: 80px; }
+    h1 { font-size: 3.5rem; }
+    .split-layout { gap: 50px; }
+}
+
+@media (max-width: 768px) {
+    /* Header */
+    .desktop-nav, .link-login, .btn-donate { display: none; }
+    .mobile-menu-toggle { display: block; }
+    
+    /* Typography */
+    h1 { font-size: 2.8rem; }
+    h2 { font-size: 2.2rem; }
+    
+    /* Layout */
+    .hero-section { padding-left: 0; padding-right: 0; }
+    .split-layout { flex-direction: column; gap: 40px; }
+    
+    /* Ensure image is always on top visually on mobile */
+    .image-column { width: 100%; order: 1; margin-bottom: 20px; }
+    .text-column { width: 100%; order: 2; }
+    
+    /* Reset reverse desktop */
+    .reverse-desktop { flex-direction: column; }
+    
+    .hero-actions, .btn-group { flex-direction: column; width: 100%; }
+    .btn-primary, .btn-outline, .btn-outline-dark { width: 100%; text-align: center; }
+    
+    .stats-grid { gap: 30px; }
+    .image-accent-box { display: none; } /* Simpler on mobile */
+}
+/* =========================================
+   9. FOOTER (FocusPoint Style)
+   ========================================= */
+.site-footer {
+    background-color: #0f172a; /* Deep Navy */
+    color: #94a3b8; /* Slate Gray text */
+    padding: 80px 0 30px 0;
+    font-size: 0.95rem;
+    margin-top: auto; /* Pushes footer to bottom if page is short */
+}
+
+.footer-top {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1.2fr; /* Exact proportions */
+    gap: 60px;
+    padding-bottom: 60px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Typography */
+.footer-logo {
+    font-size: 1.8rem; font-family: var(--font-heading);
+    font-weight: 800; display: block; margin-bottom: 20px;
+    text-decoration: none;
+}
+.text-white { color: white; }
+.text-accent { color: var(--accent); }
+
+.footer-widget h4 {
+    color: white; font-size: 1.1rem; margin-bottom: 25px;
+    font-weight: 700; font-family: var(--font-heading);
+}
+
+.footer-widget p { font-size: 0.95rem; line-height: 1.6; margin-bottom: 20px; }
+
+/* Links List */
+.footer-list li { margin-bottom: 12px; }
+.footer-list a {
+    color: #94a3b8; text-decoration: none; transition: 0.3s;
+    display: inline-block;
+}
+.footer-list a:hover { color: var(--accent); transform: translateX(5px); }
+
+/* Social Icons */
+.social-row { display: flex; gap: 15px; }
+.social-row a {
+    width: 40px; height: 40px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: white; transition: 0.3s;
+}
+.social-row a:hover { background: var(--accent); border-color: var(--accent); transform: translateY(-3px); }
+
+/* Newsletter */
+.newsletter-form {
+    display: flex; position: relative;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 6px; padding: 5px;
+}
+.newsletter-form input {
+    background: transparent; border: none;
+    color: white; padding: 10px 15px; width: 100%;
+    outline: none; font-family: var(--font-body);
+}
+.newsletter-form button {
+    background: var(--accent); color: white;
+    border: none; width: 40px; height: 40px;
+    border-radius: 4px; cursor: pointer; transition: 0.3s;
+}
+.newsletter-form button:hover { background: white; color: var(--accent); }
+
+.contact-mini {
+    margin-top: 20px; display: flex; align-items: center; gap: 10px; font-size: 0.9rem;
+}
+.contact-mini i { color: var(--accent); }
+
+/* Footer Bottom */
+.footer-bottom {
+    padding-top: 30px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.85rem; opacity: 0.8;
+}
+.legal-links a { margin-left: 20px; color: #94a3b8; }
+.legal-links a:hover { color: white; text-decoration: underline; }
+
+/* MOBILE RESPONSIVE */
+@media (max-width: 1024px) {
+    .footer-top { grid-template-columns: 1fr 1fr; gap: 40px; }
+}
+
+@media (max-width: 768px) {
+    .site-footer { padding-top: 60px; }
+    .footer-top { grid-template-columns: 1fr; gap: 40px; }
+    .footer-widget { text-align: left; }
+    
+    .footer-bottom { flex-direction: column; gap: 15px; text-align: center; }
+    .legal-links a { margin: 0 10px; }
+}
+/* =========================================
+   10. ABOUT PAGE & TIMELINE
+   ========================================= */
+
+/* Page Hero specific overrides */
+.page-header {
+    height: 60vh; /* Shorter than home hero */
+    min-height: 500px;
+}
+.page-header h1 { font-size: 3.5rem; }
+
+/* Lead Paragraph for Philosophy */
+.lead-paragraph {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--primary);
+    line-height: 1.4;
+    margin-bottom: 30px;
+}
+
+/* TIMELINE CONTAINER */
+.timeline {
+    position: relative;
+    max-width: 800px;
+    margin: 80px auto 0;
+    padding: 0 0 40px 0;
+}
+
+/* The Vertical Line */
+.timeline::before {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0; left: 50%;
+    width: 2px;
+    background: #e2e8f0;
+    transform: translateX(-50%);
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 60px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+/* The Dot */
+.timeline-marker {
+    position: absolute;
+    left: 50%;
+    top: 20px;
+    width: 16px;
+    height: 16px;
+    background: var(--accent);
+    border: 4px solid white;
+    border-radius: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 0 0 1px #e2e8f0;
+    z-index: 2;
+}
+
+/* Content Box */
+.timeline-content {
+    width: 45%;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+    border: 1px solid rgba(0,0,0,0.02);
+    position: relative;
+}
+
+.timeline-content .date {
+    display: inline-block;
+    font-weight: 800;
+    font-size: 0.9rem;
+    color: var(--accent);
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.timeline-content h3 { font-size: 1.4rem; margin-bottom: 15px; }
+.timeline-content p { font-size: 1rem; margin-bottom: 0; opacity: 0.8; }
+
+/* Alternating Sides (Desktop) */
+.timeline-item:nth-child(odd) { justify-content: flex-start; }
+.timeline-item:nth-child(even) { justify-content: flex-end; }
+
+/* Arrows pointing to the line */
+.timeline-item:nth-child(odd) .timeline-content::after {
+    content: ''; position: absolute; top: 20px; right: -10px;
+    width: 20px; height: 20px; background: white;
+    transform: rotate(45deg);
+}
+.timeline-item:nth-child(even) .timeline-content::after {
+    content: ''; position: absolute; top: 20px; left: -10px;
+    width: 20px; height: 20px; background: white;
+    transform: rotate(45deg);
+}
+
+/* MOBILE TIMELINE RESPONSIVENESS */
+@media (max-width: 768px) {
+    .timeline::before { left: 20px; } /* Move line to left */
+    
+    .timeline-item { justify-content: flex-start; padding-left: 60px; }
+    
+    .timeline-marker { left: 20px; } /* Move dot to line */
+    
+    .timeline-content { width: 100%; } /* Full width box */
+    
+    .timeline-item:nth-child(odd) .timeline-content::after,
+    .timeline-item:nth-child(even) .timeline-content::after {
+        left: -10px; right: auto; /* Always arrow on left */
+    }
+}
+/* Update Dropdown Menu Width to handle long items */
+.dropdown-menu.wide-menu {
+    width: 300px; /* Wider to fit "Skills That Liberate The Mind" */
+}
+
+.feature-box {
+    margin-bottom: 30px;
+    padding-left: 20px;
+    border-left: 3px solid var(--accent);
+}
+
+.feature-box h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: var(--primary);
+}
+
+.feature-box p {
+    font-size: 1rem;
+    margin-bottom: 0;
+}
+/* =========================================
+   MOBILE MENU FIX (Add to bottom of style.css)
+   ========================================= */
+
+/* 1. The Overlay (Hidden by default) */
+.mobile-menu-overlay {
+    position: fixed;
+    top: 0; right: 0; bottom: 0; left: 0;
+    background: rgba(15, 23, 42, 0.6); /* Dark Backdrop */
+    z-index: 2000;
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.3s;
+}
+
+/* 2. The Sliding Panel */
+.mobile-menu-content {
+    position: absolute;
+    top: 0; right: 0; bottom: 0;
+    width: 80%;
+    max-width: 300px;
+    background: white;
+    padding: 30px;
+    transform: translateX(100%); /* Pushed off screen */
+    transition: transform 0.3s ease-out;
+    box-shadow: -5px 0 20px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+/* 3. Active State (When JS adds .active class) */
+.mobile-menu-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.mobile-menu-overlay.active .mobile-menu-content {
+    transform: translateX(0); /* Slide in */
+}
+
+/* 4. Menu Items */
+.mobile-menu-close {
+    align-self: flex-end;
+    background: none; border: none;
+    font-size: 1.5rem; color: var(--primary);
+    margin-bottom: 30px;
+    cursor: pointer;
+}
+
+.mobile-links {
+    list-style: none; padding: 0; margin: 0;
+    display: flex; flex-direction: column; gap: 20px;
+}
+
+.mobile-links a {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.mobile-highlight { color: var(--accent) !important; font-weight: 700 !important; }
+
+.mobile-btn {
+    background: var(--accent);
+    color: white !important;
+    padding: 12px 20px;
+    border-radius: 6px;
+    text-align: center;
+    font-weight: 700 !important;
+    display: inline-block;
+}
+/* =========================================
+   MOBILE MENU DEBUG & FIX
+   ========================================= */
+
+/* 1. Force Header to be Top Layer */
+.main-header {
+    z-index: 9999 !important; /* Forces header above Hero/Images */
+}
+
+/* 2. Force Hamburger Button to be Clickable */
+.mobile-menu-toggle {
+    position: relative; 
+    z-index: 10000 !important; /* Higher than header */
+    cursor: pointer; /* Shows hand icon */
+    padding: 10px; /* Increases clickable area */
+    margin-right: -10px; /* Aligns visually */
+    pointer-events: auto !important; /* Forces clicks to register */
+}
+
+/* 3. Ensure Overlay is below the button but above content */
+.mobile-menu-overlay {
+    z-index: 9998 !important;
+}
+
+/* 4. Fix for Mobile View specific to your screenshot */
+@media (max-width: 768px) {
+    .header-actions {
+        display: flex !important; /* Force display flex */
+        align-items: center;
+        gap: 15px;
+        z-index: 10001;
+    }
+    
+    .mobile-menu-toggle {
+        display: block !important; /* Force visible */
+        color: var(--primary);
+        font-size: 1.8rem; /* Make it bigger */
+    }
+}
