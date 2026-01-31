@@ -36,7 +36,7 @@
                 </ul>
             </div>
             <div class="image-column reveal-up">
-                <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=1000" alt="SoW!SE Workshop">
+                <img src="https://www.sowiseafrica.org/wp-content/uploads/2021/10/Sowise-1.jpg" alt="SoW!SE Workshop">
                 <div class="image-accent-box"></div>
             </div>
         </div>

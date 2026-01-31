@@ -6,7 +6,7 @@
 <main>
 
     <section class="hero-section">
-        <div class="hero-bg" style="background-image: url('https://images.unsplash.com/photo-1531545514256-b1400bc00f31?q=80&w=1920&auto=format&fit=crop');"></div>
+        <div class="hero-bg" style="background-image: url('https://www.sowiseafrica.org/wp-content/uploads/2021/11/Untitled-1-420x300.png');"></div>
         <div class="hero-overlay"></div>
         
         <div class="content-container hero-content">
@@ -48,7 +48,7 @@
             </div>
             
             <div class="image-column reveal-up">
-                <img src="https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?q=80&w=1000&auto=format&fit=crop" alt="SoW!SE Team Meeting">
+                <img src="https://www.sowiseafrica.org/wp-content/uploads/2021/11/Untitled-1-420x300.png" alt="SoW!SE Team Meeting">
                 <div class="image-accent-box"></div> </div>
         </div>
     </section>
@@ -105,7 +105,7 @@
             </div>
             
             <div class="image-column reveal-up">
-                <img src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?q=80&w=1000&auto=format&fit=crop" alt="Community Reconciliation">
+                <img src="https://www.sowiseafrica.org/wp-content/uploads/2021/10/IMG-20211022-WA0004-420x300.jpg" alt="Community Reconciliation">
                 <div class="image-accent-box"></div>
             </div>
         </div>
