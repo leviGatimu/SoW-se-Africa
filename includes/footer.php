@@ -63,6 +63,7 @@
             <div class="legal-links">
                 <a href="#">Privacy Policy</a>
                 <a href="#">Terms of Service</a>
+                <a href="admin/login.php" style="opacity: 0.5;">Admin Login</a>
             </div>
         </div>
     </div>

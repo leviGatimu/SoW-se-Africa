@@ -15,10 +15,20 @@
 <header class="main-header">
     <div class="header-container">
         
-        <a href="index.php" class="brand-logo">
-            <span class="logo-main">SoW!SE</span>
-            <span class="logo-sub">AFRICA</span>
-        </a>
+        <a href="index.php" class="brand-logo" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
+    
+    <img src="assets/img/logo.png" alt="SoW!SE Logo" style="height: 50px; width: auto;">
+    
+    <div style="display: flex; flex-direction: column; line-height: 1;">
+        <span style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.5rem; color: #0f172a; letter-spacing: -1px;">
+            SoW!SE
+        </span>
+        <span style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.85rem; color: #f59e0b; letter-spacing: 2px;">
+            AFRICA
+        </span>
+    </div>
+
+</a>
 
         <nav class="desktop-nav">
             <ul class="nav-links">
@@ -28,7 +38,7 @@
                     <ul class="dropdown-menu">
                         <li><a href="about.php">Our Story</a></li>
                         <li><a href="team.php">Leadership Team</a></li>
-                        <li><a href="mission.php">Philosophy</a></li>
+                        <li><a href="mission.php">Mission & vision</a></li>
                     </ul>
                 </li>
                 <li class="dropdown-trigger">
@@ -46,7 +56,6 @@
         </nav>
 
         <div class="header-actions">
-            <a href="login.php" class="link-login">Login</a>
             <a href="donate.php" class="btn-donate">Donate Now</a>
             
             <button class="mobile-menu-toggle" aria-label="Open Menu">
@@ -68,7 +77,6 @@
                 <li><a href="leadership.php">Leadership</a></li>
                 <li><a href="blog.php">Blog</a></li>
                 <li><a href="contact.php">Contact Us</a></li>
-                <li><a href="login.php" class="mobile-highlight">Login</a></li>
                 <li><a href="donate.php" class="mobile-btn">Donate Now</a></li>
             </ul>
         </div>

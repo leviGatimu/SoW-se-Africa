@@ -694,4 +694,96 @@ p { font-size: 1.125rem; margin-bottom: 30px; }
         color: var(--primary);
         font-size: 1.8rem; /* Make it bigger */
     }
+}/* =========================================
+   EMERGENCY VISIBILITY FIX
+   ========================================= */
+
+/* Force blog cards to show even if JS fails */
+.blog-card.reveal-up, 
+.text-card.reveal-up {
+    opacity: 1 !important;
+    transform: none !important;
+    visibility: visible !important;
+}
+
+/* Ensure the grid container has height */
+.blog-grid, .blog-list {
+    display: grid; /* or block */
+    height: auto !important;
+    min-height: 100px;
+}
+/* =========================================
+   EMERGENCY VISIBILITY FIX
+   ========================================= */
+
+/* Force blog cards to show even if JS fails */
+.blog-card.reveal-up, 
+.text-card.reveal-up {
+    opacity: 1 !important;
+    transform: none !important;
+    visibility: visible !important;
+}
+
+/* Ensure the grid container has height */
+.blog-grid, .blog-list {
+    display: grid; /* or block */
+    height: auto !important;
+    min-height: 100px;
+}
+/* =========================================
+   MOBILE MENU FIX (Solid Background)
+   ========================================= */
+
+@media (max-width: 768px) {
+    
+    /* 1. The Container for Mobile Links */
+    .mobile-menu-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background-color: #0f172a; /* Solid Dark Blue - No Transparency */
+        z-index: 9998;
+        padding-top: 80px; /* Space for close button */
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: 0.3s ease-in-out;
+        
+        /* Hide by default */
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+    }
+
+    /* 2. When Active (Open) */
+    .mobile-menu-overlay.active {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: all;
+    }
+
+    /* 3. The Links inside */
+    .mobile-links a {
+        display: block;
+        font-size: 1.5rem;
+        color: white;
+        text-align: center;
+        margin-bottom: 25px;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    /* 4. Close Button Position */
+    .mobile-menu-close {
+        position: absolute;
+        top: 25px;
+        right: 25px;
+        color: white;
+        font-size: 2rem;
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
 }

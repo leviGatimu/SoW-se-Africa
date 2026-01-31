@@ -1,19 +1,15 @@
 <?php
-// Database Configuration
-$host = "localhost";
-$user = "root";       // Default XAMPP/WAMP username
-$pass = "";           // Default XAMPP/WAMP password (leave empty)
-$db_name = "sowise_db";
+$servername = "localhost";
+$username = "root";       // Default XAMPP user
+$password = "";           // Default XAMPP password is empty
+$dbname = "sowise_db";    // Ensure this matches your phpMyAdmin DB name
 
-// Create Connection
-$conn = new mysqli($host, $user, $pass, $db_name);
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
 
-// Check Connection
+// Check connection
 if ($conn->connect_error) {
-    // If it fails, stop everything and show the error
-    die("❌ Connection failed: " . $conn->connect_error);
+    // Stop everything if DB fails, but don't show ugly errors to users
+    die("Connection failed: " . $conn->connect_error);
 }
-
-// Optional: Set charset to handle special characters correctly
-$conn->set_charset("utf8mb4");
 ?>

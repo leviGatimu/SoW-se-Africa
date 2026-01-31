@@ -1,135 +1,120 @@
 <?php include 'includes/header.php'; ?>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<main style="background: white; font-family: 'Inter', sans-serif; color: #334155;">
 
-<main>
-
-    <section class="page-hero mission-hero">
-        <div class="hero-overlay"></div>
-        <div class="container hero-container">
-            <span class="pill-label fade-in">OUR PURPOSE</span>
-            <h1 class="fade-in">Guided by <span class="text-gradient">Values.</span></h1>
-            <p class="fade-in">Our roadmap to creating a generation of ethical leaders and sustainable wealth creators in Africa.</p>
+    <section style="
+        background: linear-gradient(rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.9)), url('https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=2000');
+        background-size: cover;
+        background-position: center;
+        padding: 80px 20px; 
+        text-align: center; 
+        color: white;">
+        
+        <div class="content-container" style="max-width: 800px; margin: 0 auto;">
+            <span style="color: #f59e0b; font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 2px;">
+                Who We Are
+            </span>
+            <h1 style="font-size: 2.8rem; font-weight: 700; margin: 15px 0 10px 0;">
+                Our Mission & Vision
+            </h1>
+            <p style="font-size: 1.1rem; color: #cbd5e1; font-weight: 300; max-width: 600px; margin: 0 auto;">
+                A local NGO dedicated to values-based leadership, youth empowerment, and wealth creation for a better Africa.
+            </p>
         </div>
     </section>
 
-    <section class="section-padding">
-        <div class="container">
-            <div class="mv-grid">
-                <div class="mv-card reveal-up">
-                    <span class="mv-label">OUR MISSION</span>
-                    <h2>To Champion Values-Based Leadership</h2>
-                    <p>We exist to empower youth through entrepreneurship and digital innovation, advocating for practical education that produces ethical leaders ready to create wealth.</p>
-                    <div class="mv-icon"><i class="fa-solid fa-bullseye"></i></div>
+    <section style="padding: 80px 20px;">
+        <div class="content-container" style="max-width: 1000px; margin: 0 auto; display: flex; align-items: center; gap: 60px; flex-wrap: wrap;">
+            
+            <div style="flex: 1; min-width: 300px;">
+                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+                    <div style="background: #e0f2fe; color: #0284c7; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+                        <i class="fa-solid fa-eye"></i>
+                    </div>
+                    <h2 style="font-size: 2rem; color: #0f172a; margin: 0; font-weight: 700;">Our Vision</h2>
                 </div>
-
-                <div class="mv-card dark reveal-up">
-                    <span class="mv-label">OUR VISION</span>
-                    <h2>A Synergized Generation</h2>
-                    <p>We envision an Africa where the spiritual and physical worlds are harmonized, creating leaders who are balanced, healthy, and innovative problem solvers.</p>
-                    <div class="mv-icon"><i class="fa-solid fa-eye"></i></div>
-                </div>
+                <p style="font-size: 1.25rem; line-height: 1.6; color: #0f172a; font-weight: 500; border-left: 4px solid #0284c7; padding-left: 20px;">
+                    "A transformed, healthy, wealthy and inclusive society that embraces values."
+                </p>
+                <p style="margin-top: 20px; font-size: 1rem; color: #64748b; line-height: 1.6;">
+                    We envision an Africa where integrity is the norm, not the exception. By fostering a culture of inclusivity and health, we aim to build a society that thrives on shared prosperity.
+                </p>
             </div>
+
+            <div style="flex: 1; min-width: 300px;">
+                <img src="https://images.unsplash.com/photo-1531206715517-5c0ba140840f?q=80&w=800&auto=format&fit=crop" 
+                     alt="Vision of Future Africa" 
+                     style="width: 100%; border-radius: 12px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);">
+            </div>
+
         </div>
     </section>
 
-    <section class="values-section section-padding bg-light">
-        <div class="container">
-            <div class="section-header center-text reveal-up">
-                <span class="section-tag">WHAT WE STAND FOR</span>
-                <h2>Our Core Values</h2>
-                <p>The principles that guide every decision we make.</p>
+    <section style="padding: 80px 20px; background: #f8fafc;">
+        <div class="content-container" style="max-width: 1000px; margin: 0 auto; display: flex; flex-direction: row-reverse; align-items: center; gap: 60px; flex-wrap: wrap;">
+            
+            <div style="flex: 1; min-width: 300px;">
+                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+                    <div style="background: #fef3c7; color: #d97706; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+                        <i class="fa-solid fa-rocket"></i>
+                    </div>
+                    <h2 style="font-size: 2rem; color: #0f172a; margin: 0; font-weight: 700;">Our Mission</h2>
+                </div>
+                <p style="font-size: 1.25rem; line-height: 1.6; color: #0f172a; font-weight: 500; border-left: 4px solid #f59e0b; padding-left: 20px;">
+                    "Educate, human capital development on governance and entrepreneurship through facilitation, internships and mentorship programs."
+                </p>
+                <p style="margin-top: 20px; font-size: 1rem; color: #64748b; line-height: 1.6;">
+                    We are action-oriented. Through practical mentorship and hands-on facilitation, we bridge the gap between academic theory and the real-world skills needed to lead and create wealth.
+                </p>
             </div>
 
-            <div class="values-grid">
-                <div class="value-item reveal-up">
-                    <div class="v-icon-box"><i class="fa-solid fa-scale-balanced"></i></div>
-                    <h3>Integrity</h3>
-                    <p>We believe in doing the right thing, even when no one is watching. Ethical governance is the bedrock of our leadership training.</p>
-                </div>
-
-                <div class="value-item reveal-up">
-                    <div class="v-icon-box"><i class="fa-solid fa-hand-holding-heart"></i></div>
-                    <h3>Service</h3>
-                    <p>True leadership is service. We teach our students that their skills should primarily be used to uplift their communities.</p>
-                </div>
-
-                <div class="value-item reveal-up">
-                    <div class="v-icon-box"><i class="fa-solid fa-lightbulb"></i></div>
-                    <h3>Innovation</h3>
-                    <p>We embrace technology and creative thinking to solve age-old problems. We are not afraid to disrupt the status quo.</p>
-                </div>
-
-                <div class="value-item reveal-up">
-                    <div class="v-icon-box"><i class="fa-solid fa-users"></i></div>
-                    <h3>Inclusivity</h3>
-                    <p>We advocate for the reconciliation of all people, believing that every youth deserves a chance regardless of their past.</p>
-                </div>
-
-                <div class="value-item reveal-up">
-                    <div class="v-icon-box"><i class="fa-solid fa-leaf"></i></div>
-                    <h3>Sustainability</h3>
-                    <p>We are committed to creating solutions that last, respecting our environment and ensuring long-term economic growth.</p>
-                </div>
-
-                <div class="value-item reveal-up">
-                    <div class="v-icon-box"><i class="fa-solid fa-person-praying"></i></div>
-                    <h3>Harmony</h3>
-                    <p>We strive for a balance between the spiritual and the physical, ensuring mental and emotional well-being.</p>
-                </div>
+            <div style="flex: 1; min-width: 300px;">
+                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=800&auto=format&fit=crop" 
+                     alt="Mission in Action" 
+                     style="width: 100%; border-radius: 12px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);">
             </div>
+
         </div>
     </section>
 
-    <section class="philosophy-section section-padding">
-        <div class="container split-layout">
-            <div class="philosophy-image reveal-up">
-                <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=1000&auto=format&fit=crop" alt="Philosophy">
-                <div class="quote-overlay">
-                    "Leadership is both hindsight and foresight."
-                </div>
+    <section style="padding: 80px 20px; background: white;">
+        <div class="content-container" style="max-width: 1000px; margin: 0 auto;">
+            
+            <div style="text-align: center; margin-bottom: 50px;">
+                <h2 style="font-size: 2rem; color: #0f172a;">Our Strategic Focus</h2>
+                <div style="width: 60px; height: 4px; background: #f59e0b; margin: 15px auto 0;"></div>
             </div>
-            <div class="philosophy-content reveal-up">
-                <span class="section-tag">OUR PHILOSOPHY</span>
-                <h2>The So W!se Way</h2>
-                <p>We believe that education is not just about acquiring facts; it is about learning how to live. Our philosophy is rooted in the idea that <strong>nobody is born a failure</strong>.</p>
-                <p>Whether it is through our "Life-Learning" curriculum or our coding bootcamps, our goal is to reconcile young people with their potential. We help them review their past (hindsight) to build a better future (foresight).</p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 30px;">
                 
-                <ul class="check-list">
-                    <li><i class="fa-solid fa-check"></i> Practical Skill Acquisition</li>
-                    <li><i class="fa-solid fa-check"></i> Mental & Physical Wellness</li>
-                    <li><i class="fa-solid fa-check"></i> Community Reconciliation</li>
-                </ul>
-            </div>
-        </div>
-    </section>
+                <div style="padding: 25px; border: 1px solid #e2e8f0; border-radius: 8px; transition: 0.3s;">
+                    <i class="fa-solid fa-scale-balanced" style="font-size: 1.8rem; color: #f59e0b; margin-bottom: 15px;"></i>
+                    <h3 style="font-size: 1.1rem; color: #0f172a; margin-bottom: 10px;">Governance</h3>
+                    <p style="font-size: 0.9rem; color: #64748b;">Instilling ethical leadership and integrity in decision-making processes.</p>
+                </div>
 
-    <section class="cta-section">
-        <div class="reveal-up">
-            <h2>Support Our Mission</h2>
-            <p>Your contribution helps us train more leaders.</p>
-            <div class="btn-group">
-                <a href="donate.php" class="btn-white">Make a Donation</a>
-                <a href="contact.php" class="btn-outline">Partner With Us</a>
+                <div style="padding: 25px; border: 1px solid #e2e8f0; border-radius: 8px; transition: 0.3s;">
+                    <i class="fa-solid fa-briefcase" style="font-size: 1.8rem; color: #f59e0b; margin-bottom: 15px;"></i>
+                    <h3 style="font-size: 1.1rem; color: #0f172a; margin-bottom: 10px;">Entrepreneurship</h3>
+                    <p style="font-size: 0.9rem; color: #64748b;">Empowering youth to create wealth through innovation and business skills.</p>
+                </div>
+
+                <div style="padding: 25px; border: 1px solid #e2e8f0; border-radius: 8px; transition: 0.3s;">
+                    <i class="fa-solid fa-heart-pulse" style="font-size: 1.8rem; color: #f59e0b; margin-bottom: 15px;"></i>
+                    <h3 style="font-size: 1.1rem; color: #0f172a; margin-bottom: 10px;">Healthy Living</h3>
+                    <p style="font-size: 0.9rem; color: #64748b;">Promoting mental and physical well-being as a cornerstone of success.</p>
+                </div>
+
+                <div style="padding: 25px; border: 1px solid #e2e8f0; border-radius: 8px; transition: 0.3s;">
+                    <i class="fa-solid fa-users-viewfinder" style="font-size: 1.8rem; color: #f59e0b; margin-bottom: 15px;"></i>
+                    <h3 style="font-size: 1.1rem; color: #0f172a; margin-bottom: 10px;">Inclusivity</h3>
+                    <p style="font-size: 0.9rem; color: #64748b;">Creating spaces where every voice is heard and valued.</p>
+                </div>
+
             </div>
         </div>
     </section>
 
 </main>
-
-<script>
-    gsap.registerPlugin(ScrollTrigger);
-    
-    gsap.from(".fade-in", { y: 30, opacity: 0, duration: 1, stagger: 0.2 });
-
-    document.querySelectorAll(".reveal-up").forEach((el) => {
-        ScrollTrigger.create({
-            trigger: el,
-            start: "top 85%",
-            onEnter: () => el.classList.add("active")
-        });
-    });
-</script>
 
 <?php include 'includes/footer.php'; ?>
