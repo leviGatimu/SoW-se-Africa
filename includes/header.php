@@ -66,21 +66,6 @@
 
     </div>
 
-    <div class="mobile-menu-overlay">
-        <div class="mobile-menu-content">
-            <button class="mobile-menu-close"><i class="fa-solid fa-xmark"></i></button>
-            
-            <ul class="mobile-links">
-                <li><a href="index.php">Home</a></li>
-                <li><a href="about.php">Who We Are</a></li>
-                <li><a href="team.php">Our Team</a></li>
-                <li><a href="programs.php">Our Programs</a></li>
-                <li><a href="leadership.php">Leadership</a></li>
-                <li><a href="blog.php">Blog</a></li>
-                <li><a href="contact.php">Contact Us</a></li>
-                <li><a href="donate.php" class="mobile-btn">Donate Now</a></li>
-            </ul>
-        </div>
-    </div>
+   
 
 </header>

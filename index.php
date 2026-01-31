@@ -49,7 +49,8 @@
             
             <div class="image-column reveal-up">
                 <img src="https://www.sowiseafrica.org/wp-content/uploads/2021/11/Untitled-1-420x300.png" alt="SoW!SE Team Meeting">
-                <div class="image-accent-box"></div> </div>
+                <div class="image-accent-box"></div> 
+            </div>
         </div>
     </section>
 
