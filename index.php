@@ -15,8 +15,8 @@
             <p class="fade-in">We bridge the gap between academic theory and practical reality. Our mission is to restore the identity of African youth through "Life-Learning" education.</p>
             
             <div class="btn-group fade-in">
-                <a href="#about" class="btn-primary">Who We Are</a>
-                <a href="contact.php" class="btn-outline">Get Involved</a>
+                <a href="#about" class="btn-primary" style="border-radius: 30px;">Who We Are</a>
+                <a href="contact.php" class="btn-outline " style="border-radius: 30px;">Get Involved</a>
             </div>
         </div>
     </section>

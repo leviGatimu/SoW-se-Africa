@@ -8,10 +8,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="icon" type="image/png" href="assets/img/logo.png">
     
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
+
 <div id="preloader">
     <div class="preloader-inner">
         <img src="assets/img/logo.png" alt="SoW!SE Loading..." class="preloader-logo">
@@ -31,9 +33,9 @@
         transition: opacity 0.8s ease, visibility 0.8s ease;
     }
 
-    /* 2. Breathing Animation (2 Seconds per breath) */
+    /* 2. Breathing Animation */
     .preloader-logo {
-        width: 120px; /* Made it slightly bigger */
+        width: 120px;
         animation: breathe 2s infinite ease-in-out;
     }
 
@@ -52,58 +54,64 @@
 
 <script>
     window.addEventListener("load", function() {
-        // The page has finished loading.
-        // NOW, we tell the browser to wait 3000ms (3 seconds) before fading out.
         setTimeout(function() {
             document.body.classList.add("loaded");
         }, 3000);
     });
 
-    // Fallback: If page is stuck loading for 7 seconds, force open anyway
+    // Fallback
     setTimeout(function() {
         document.body.classList.add("loaded");
     }, 7000);
 </script>
+
 <header class="main-header">
     <div class="header-container">
         
         <a href="index.php" class="brand-logo" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
-    
-    <img src="assets/img/logo.png" alt="SoW!SE Logo" style="height: 50px; width: auto;">
-    
-    <div style="display: flex; flex-direction: column; line-height: 1;">
-        <span style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.5rem; color: #0f172a; letter-spacing: -1px;">
-            SoW!SE
-        </span>
-        <span style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.85rem; color: #f59e0b; letter-spacing: 2px;">
-            AFRICA
-        </span>
-    </div>
-
-</a>
+            <img src="assets/img/logo.png" alt="SoW!SE Logo" style="height: 50px; width: auto;">
+            <div style="display: flex; flex-direction: column; line-height: 1;">
+                <span style="font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.5rem; color: #0f172a; letter-spacing: -1px;">
+                    SoW!SE
+                </span>
+                <span style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.85rem; color: #f59e0b; letter-spacing: 2px;">
+                    AFRICA
+                </span>
+            </div>
+        </a>
 
         <nav class="desktop-nav">
             <ul class="nav-links">
-                <li><a href="index.php">Home</a></li>
+                <li>
+                    <a href="index.php"><i class="fa-solid fa-house"></i> Home</a>
+                </li>
+                
                 <li class="dropdown-trigger">
-                    <a href="#">Who We Are <i class="fa-solid fa-chevron-down"></i></a>
+                    <a href="#"><i class="fa-solid fa-users"></i> Who We Are <i class="fa-solid fa-chevron-down" style="font-size: 0.8em; margin-left: 5px;"></i></a>
                     <ul class="dropdown-menu">
-                        <li><a href="about">Our Story</a></li>
-                        <li><a href="team">Leadership Team</a></li>
-                        <li><a href="mission">Mission & vision</a></li>
+                        <li><a href="about"><i class="fa-solid fa-book-open"></i> Our Story</a></li>
+                        <li><a href="team"><i class="fa-solid fa-user-tie"></i> Leadership Team</a></li>
+                        <li><a href="mission"><i class="fa-solid fa-compass"></i> Mission & Vision</a></li>
                     </ul>
                 </li>
+                
                 <li class="dropdown-trigger">
-                    <a href="#">Our Work <i class="fa-solid fa-chevron-down"></i></a>
+                    <a href="#"><i class="fa-solid fa-briefcase"></i> Our Work <i class="fa-solid fa-chevron-down" style="font-size: 0.8em; margin-left: 5px;"></i></a>
                     <ul class="dropdown-menu wide-menu">
-                        <li><a href="leadership">Leadership</a></li>
-                        <li><a href="programs.php#skills">Skills</a></li>
-                        <li><a href="programs.php#coaching">Coaching</a></li>
-                        <li><a href="programs.php#values">Values</a></li>
+                        <li><a href="leadership"><i class="fa-solid fa-scale-balanced"></i> Leadership</a></li>
+                        <li><a href="skills.php"><i class="fa-solid fa-brain"></i> Skills</a></li>
+                        <li><a href="programs.php#coaching"><i class="fa-solid fa-user-group"></i> Coaching</a></li>
+                        <li><a href="programs.php#values"><i class="fa-solid fa-heart"></i> Values</a></li>
                     </ul>
                 </li>
-                <li><a href="blog.php">Blog</a></li>
-                <li><a href="contact.php">Contact</a></li>
+                
+                <li>
+                    <a href="blog.php"><i class="fa-solid fa-newspaper"></i> Blog</a>
+                </li>
+                
+                <li>
+                    <a href="contact.php"><i class="fa-solid fa-envelope"></i> Contact</a>
+                </li>
             </ul>
         </nav>
 
@@ -116,7 +124,4 @@
         </div>
 
     </div>
-
-   
-
 </header>
