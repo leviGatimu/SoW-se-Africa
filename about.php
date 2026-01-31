@@ -5,7 +5,7 @@
 
 <main>
 
-    <section class="hero-section page-header">
+    <section class="hero-section page-header" style="margin-top: 10px;">
         <div class="hero-bg" style="background-image: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2000');"></div>
         <div class="hero-overlay"></div>
         <div class="content-container hero-content center-text">

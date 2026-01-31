@@ -9,7 +9,7 @@
         <div class="hero-bg" style="background-image: url('https://www.sowiseafrica.org/wp-content/uploads/2021/11/Untitled-1-420x300.png');"></div>
         <div class="hero-overlay"></div>
         
-        <div class="content-container hero-content">
+        <div class="content-container hero-content" style="margin-top: 70px;">
             <span class="hero-badge fade-in">EST. 2012 • RWANDA & KENYA</span>
             <h1 class="fade-in">Values-Based Leadership <br>for a Better Africa.</h1>
             <p class="fade-in">We bridge the gap between academic theory and practical reality. Our mission is to restore the identity of African youth through "Life-Learning" education.</p>

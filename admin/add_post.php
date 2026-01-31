@@ -3,49 +3,122 @@ session_start();
 if(!isset($_SESSION['admin'])) { header("Location: login.php"); exit(); }
 include '../includes/db_connect.php';
 
-// --- FIXED DOCUMENT PARSER ---
+// --- SMART CONTENT PARSER ---
 $imported_content = "";
 $imported_title = "";
 
-function read_docx($filename){
-    $striped_content = '';
-    $zip = new ZipArchive;
-    
-    // Open the archive
-    if ($zip->open($filename) === true) {
-        // Locate the content file inside the Word Doc
-        if (($index = $zip->locateName('word/document.xml')) !== false) {
-            $data = $zip->getFromIndex($index);
-            
-            // Extract text from XML
-            $xml = new DOMDocument();
-            $xml->loadXML($data, LIBXML_NOENT | LIBXML_XINCLUDE | LIBXML_NOERROR | LIBXML_NOWARNING);
-            $striped_content = strip_tags($xml->saveXML());
+// 1. Helper: Format raw text into nice HTML
+function format_as_blog_post($raw_text) {
+    $lines = preg_split('/\r\n|\r|\n/', $raw_text);
+    $html_output = "";
+    foreach ($lines as $line) {
+        $line = trim($line);
+        if (empty($line)) continue;
+        // Detect Heading (Short line, no end punctuation)
+        if (strlen($line) < 60 && !preg_match('/[.,;]$/', $line)) {
+            $html_output .= "<h2>" . htmlspecialchars($line) . "</h2>";
+        } else {
+            $html_output .= "<p>" . htmlspecialchars($line) . "</p>";
         }
-        // CRITICAL FIX: Only close once!
-        $zip->close();
     }
-    return $striped_content;
+    return $html_output;
 }
 
-// HANDLE FILE IMPORT
+// 2. Helper: Read Word (.docx)
+function read_docx($filename){
+    $zip = new ZipArchive;
+    $output_text = "";
+    if ($zip->open($filename) === true) {
+        if (($index = $zip->locateName('word/document.xml')) !== false) {
+            $xml_data = $zip->getFromIndex($index);
+            $xml_data = str_replace('</w:p>', "\n", $xml_data); 
+            $output_text = strip_tags($xml_data);
+        }
+        $zip->close();
+    }
+    return $output_text;
+}
+
+// 3. Helper: Read PDF (Native PHP)
+function read_pdf($filename) {
+    $content = file_get_contents($filename);
+    $text = "";
+    
+    // Get all text objects in the PDF
+    $objects = array();
+    if (preg_match_all('/<<.*?>>/s', $content, $objects)) {
+        // Iterate over objects to find text streams
+        foreach ($objects[0] as $object) {
+            // Check for FlateDecode (Compressed text)
+            if (strpos($object, '/FlateDecode') !== false) {
+                $stream_start = strpos($content, 'stream', strpos($content, $object)) + 6;
+                $stream_end = strpos($content, 'endstream', $stream_start);
+                $stream = substr($content, $stream_start, $stream_end - $stream_start);
+                
+                // Try to decompress
+                $decoded = @gzuncompress(trim($stream));
+                if ($decoded) {
+                    // Extract text inside parentheses (...)Tj or (...) Tj
+                    if(preg_match_all('/\((.*?)\) ?Tj/', $decoded, $matches)) {
+                        foreach($matches[1] as $match) {
+                            $text .= $match . " ";
+                        }
+                        $text .= "\n"; // New line per block
+                    }
+                    // Handle TJ arrays [ (text) -10 (text) ] TJ
+                    elseif(preg_match_all('/\[(.*?)\] ?TJ/', $decoded, $matches)) {
+                        foreach($matches[1] as $match) {
+                            // Clean up the array syntax
+                            $clean = preg_replace('/\((.*?)\)/', '$1', $match); // Keep text in parens
+                            $clean = preg_replace('/<.*?>/', '', $clean);       // Remove hex
+                            $clean = preg_replace('/-?\d+(\.\d+)?/', '', $clean); // Remove spacing numbers
+                            $text .= $clean . " ";
+                        }
+                        $text .= "\n";
+                    }
+                }
+            }
+        }
+    }
+
+    // Fallback: If compression failed, try raw extraction (rare for modern PDFs)
+    if (empty($text)) {
+        if(preg_match_all('/\((.*?)\) ?Tj/', $content, $matches)) {
+            $text = implode(' ', $matches[1]);
+        }
+    }
+    
+    return $text;
+}
+
+
+// HANDLE IMPORT
 if(isset($_POST['import_doc'])) {
     if(isset($_FILES['doc_file']['name']) && $_FILES['doc_file']['name'] != "") {
         $file_ext = strtolower(pathinfo($_FILES['doc_file']['name'], PATHINFO_EXTENSION));
         $temp_file = $_FILES['doc_file']['tmp_name'];
-        
-        // 1. Parse .DOCX
+        $raw_text = "";
+        $imported_title = pathinfo($_FILES['doc_file']['name'], PATHINFO_FILENAME);
+
+        // Switch based on extension
         if($file_ext == 'docx') {
-            $imported_content = read_docx($temp_file);
-            $imported_title = pathinfo($_FILES['doc_file']['name'], PATHINFO_FILENAME);
+            $raw_text = read_docx($temp_file);
         } 
-        // 2. Parse .TXT
         elseif($file_ext == 'txt') {
-            $imported_content = file_get_contents($temp_file);
-            $imported_title = pathinfo($_FILES['doc_file']['name'], PATHINFO_FILENAME);
+            $raw_text = file_get_contents($temp_file);
+        }
+        elseif($file_ext == 'pdf') {
+            $raw_text = read_pdf($temp_file);
         } 
         else {
-            $error = "Error: Please upload a valid Word (.docx) or Text (.txt) file.";
+            $error = "File type not supported. Use .docx, .pdf, or .txt";
+        }
+
+        if(!empty($raw_text)) {
+            $imported_content = format_as_blog_post($raw_text);
+            $imported_title = ucwords(str_replace(['_', '-'], ' ', $imported_title));
+        } elseif(empty($error)) {
+            $error = "Could not extract text. If this is a PDF, ensure it's not a scanned image.";
         }
     }
 }
@@ -85,11 +158,11 @@ if(isset($_POST['submit'])) {
     <script>
       tinymce.init({
         selector: '#content-editor',
-        height: 500,
+        height: 600,
         menubar: false,
-        plugins: 'link image code lists',
-        toolbar: 'undo redo | blocks | bold italic | alignleft aligncenter | bullist numlist | link',
-        content_style: 'body { font-family:Inter,sans-serif; font-size:16px; color:#334155; line-height:1.6; }'
+        plugins: 'link image code lists table',
+        toolbar: 'undo redo | blocks | bold italic | alignleft aligncenter | bullist numlist | link table',
+        content_style: 'body { font-family:Inter,sans-serif; font-size:16px; color:#334155; line-height:1.8; padding: 20px; } h2 { color: #0f172a; margin-top: 30px; } p { margin-bottom: 20px; }'
       });
     </script>
 </head>
@@ -112,15 +185,15 @@ if(isset($_POST['submit'])) {
             <div class="import-header">
                 <div class="icon-circle"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
                 <div class="import-text">
-                    <h3>Auto-Generate from File</h3>
-                    <p>Upload a Word Doc (.docx) or Text file to instantly fill the editor.</p>
+                    <h3>Smart Import</h3>
+                    <p>Upload a <b>PDF</b>, <b>Word Doc</b>, or <b>Text File</b>. We'll format it for you.</p>
                 </div>
             </div>
             
             <form method="POST" enctype="multipart/form-data" class="import-form">
                 <div class="file-drop-zone">
-                    <input type="file" name="doc_file" id="doc_file" accept=".docx, .txt" required onchange="this.form.submit()">
-                    <span class="drop-text"><i class="fa-solid fa-cloud-arrow-up"></i> Click to Upload File</span>
+                    <input type="file" name="doc_file" id="doc_file" accept=".docx, .pdf, .txt" required onchange="this.form.submit()">
+                    <span class="drop-text"><i class="fa-solid fa-cloud-arrow-up"></i> Select File to Convert</span>
                 </div>
                 <input type="hidden" name="import_doc" value="1">
             </form>
@@ -128,9 +201,7 @@ if(isset($_POST['submit'])) {
             <?php if(isset($error)) echo "<div class='error-msg'><i class='fa-solid fa-triangle-exclamation'></i> $error</div>"; ?>
         </div>
 
-
         <div class="card editor-card">
-            
             <div class="card-header">
                 <h2>Write New Article</h2>
             </div>
@@ -140,7 +211,7 @@ if(isset($_POST['submit'])) {
                 <div class="form-group">
                     <label>Article Title</label>
                     <input type="text" name="title" class="form-control lg" 
-                           placeholder="Enter an engaging title..." 
+                           placeholder="Enter title..." 
                            value="<?php echo htmlspecialchars($imported_title); ?>" required>
                 </div>
 
@@ -154,21 +225,18 @@ if(isset($_POST['submit'])) {
                             <option value="Announcement">Announcement</option>
                         </select>
                     </div>
-
                     <div class="form-group half">
                         <label>Featured Image</label>
                         <div class="file-upload-box">
                             <input type="file" name="image" id="file-input">
-                            <label for="file-input">
-                                <i class="fa-solid fa-image"></i> Choose Image
-                            </label>
+                            <label for="file-input"><i class="fa-solid fa-image"></i> Choose Image</label>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label>Content Body</label>
-                    <textarea id="content-editor" name="content"><?php echo htmlspecialchars($imported_content); ?></textarea>
+                    <textarea id="content-editor" name="content"><?php echo $imported_content; ?></textarea>
                 </div>
 
                 <div class="form-actions">
