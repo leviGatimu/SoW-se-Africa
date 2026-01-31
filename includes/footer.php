@@ -232,6 +232,219 @@
         }
     });
 </script>
+<style>
+    /* 1. BACKDROP */
+    #drawer-backdrop {
+        position: fixed !important;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0, 0, 0, 0.5); /* Dimmed background */
+        z-index: 9999990;
+        opacity: 0;
+        visibility: hidden;
+        transition: 0.3s ease;
+    }
+    #drawer-backdrop.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* 2. THE WHITE DRAWER */
+    #mobile-drawer {
+        position: fixed !important;
+        top: 0; right: 0;
+        width: 85%;
+        max-width: 300px;
+        height: 100vh;
+        background: #ffffff; /* WHITE BACKGROUND */
+        z-index: 9999999;
+        transform: translateX(100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        flex-direction: column;
+        box-shadow: -5px 0 30px rgba(0,0,0,0.15);
+    }
+    #mobile-drawer.active {
+        transform: translateX(0);
+    }
+
+    /* 3. HEADER (Logo + Close) */
+    .drawer-header {
+        padding: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid #f1f5f9;
+    }
+    .drawer-logo {
+        font-family: 'Outfit', sans-serif;
+        font-weight: 800;
+        font-size: 1.4rem;
+        color: #0f172a; /* Dark Blue Text */
+        text-decoration: none;
+    }
+    .drawer-close {
+        background: #f8fafc;
+        border: none;
+        color: #64748b;
+        width: 35px; height: 35px;
+        border-radius: 50%;
+        font-size: 1.2rem;
+        cursor: pointer;
+        display: flex; align-items: center; justify-content: center;
+        transition: 0.2s;
+    }
+    .drawer-close:hover {
+        background: #fee2e2;
+        color: #ef4444;
+    }
+
+    /* 4. LINKS WITH ICONS */
+    .drawer-body {
+        flex: 1;
+        padding: 20px 25px;
+        overflow-y: auto;
+    }
+    .drawer-links {
+        list-style: none; padding: 0; margin: 0;
+    }
+    .drawer-links li {
+        margin-bottom: 15px;
+    }
+    .drawer-links a {
+        display: flex;
+        align-items: center;
+        gap: 15px; /* Space between icon and text */
+        padding: 10px 0;
+        color: #334155; /* Dark Grey Text */
+        font-size: 1.05rem;
+        font-weight: 600;
+        text-decoration: none;
+        border-bottom: 1px solid #f8fafc;
+        transition: 0.2s;
+    }
+    .drawer-links i {
+        color: #f59e0b; /* ORANGE ICONS */
+        width: 25px;
+        text-align: center;
+    }
+    .drawer-links a:hover {
+        color: #f59e0b; /* Orange text on hover */
+        padding-left: 8px;
+    }
+
+    /* 5. DRAWER FOOTER */
+    .drawer-footer {
+        padding: 25px;
+        background: #fffbeb; /* Very light orange bg */
+        border-top: 1px solid #fef3c7;
+    }
+    .drawer-btn {
+        display: block;
+        background: #f59e0b;
+        color: white;
+        text-align: center;
+        padding: 15px;
+        border-radius: 8px;
+        font-weight: 700;
+        text-decoration: none;
+        box-shadow: 0 4px 10px rgba(245, 158, 11, 0.3);
+        margin-bottom: 20px;
+    }
+    .drawer-socials {
+        display: flex; justify-content: center; gap: 20px;
+    }
+    .drawer-socials a {
+        color: #d97706; /* Darker Orange */
+        font-size: 1.2rem; 
+        transition: 0.3s;
+    }
+</style>
+
+<div id="drawer-backdrop" onclick="toggleDrawer(false)"></div>
+
+<div id="mobile-drawer">
+    
+    <div class="drawer-header">
+        <a href="index.php" class="drawer-logo">
+            SoW!SE <span style="color: #f59e0b;">AFRICA</span>
+        </a>
+        <button class="drawer-close" onclick="toggleDrawer(false)">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+
+    <div class="drawer-body">
+        <ul class="drawer-links">
+            <li>
+                <a href="index.php">
+                    <i class="fa-solid fa-house"></i> Home
+                </a>
+            </li>
+            <li>
+                <a href="about.php">
+                    <i class="fa-solid fa-users"></i> Who We Are
+                </a>
+            </li>
+            <li>
+                <a href="programs.php">
+                    <i class="fa-solid fa-hand-holding-heart"></i> Our Programs
+                </a>
+            </li>
+            <li>
+                <a href="blog.php">
+                    <i class="fa-solid fa-newspaper"></i> Our Journal
+                </a>
+            </li>
+            <li>
+                <a href="contact.php">
+                    <i class="fa-solid fa-envelope"></i> Contact Us
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="drawer-footer">
+        <a href="donate.php" class="drawer-btn">
+            <i class="fa-solid fa-heart"></i> Donate Now
+        </a>
+        <div class="drawer-socials">
+            <a href="#"><i class="fa-brands fa-twitter"></i></a>
+            <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function toggleDrawer(show) {
+        const drawer = document.getElementById('mobile-drawer');
+        const backdrop = document.getElementById('drawer-backdrop');
+        
+        if(show) {
+            drawer.classList.add('active');
+            backdrop.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        } else {
+            drawer.classList.remove('active');
+            backdrop.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    }
+
+    // Connect to header button
+    document.addEventListener("DOMContentLoaded", () => {
+        const headerBtn = document.querySelector('.mobile-menu-toggle');
+        if(headerBtn) {
+            const newBtn = headerBtn.cloneNode(true);
+            headerBtn.parentNode.replaceChild(newBtn, headerBtn);
+            newBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                toggleDrawer(true);
+            });
+        }
+    });
+</script>
 
 </body>
 </html>

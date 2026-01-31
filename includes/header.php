@@ -12,7 +12,58 @@
     
 </head>
 <body>
+<div id="preloader">
+    <div class="preloader-inner">
+        <img src="assets/img/logo.png" alt="SoW!SE Loading..." class="preloader-logo">
+    </div>
+</div>
 
+<style>
+    /* 1. Full Screen White Overlay */
+    #preloader {
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background-color: #ffffff;
+        z-index: 9999999999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: opacity 0.8s ease, visibility 0.8s ease;
+    }
+
+    /* 2. Breathing Animation (2 Seconds per breath) */
+    .preloader-logo {
+        width: 120px; /* Made it slightly bigger */
+        animation: breathe 2s infinite ease-in-out;
+    }
+
+    @keyframes breathe {
+        0% { transform: scale(0.95); opacity: 0.7; }
+        50% { transform: scale(1.1); opacity: 1; }
+        100% { transform: scale(0.95); opacity: 0.7; }
+    }
+
+    /* 3. Hide Class */
+    body.loaded #preloader {
+        opacity: 0;
+        visibility: hidden;
+    }
+</style>
+
+<script>
+    window.addEventListener("load", function() {
+        // The page has finished loading.
+        // NOW, we tell the browser to wait 3000ms (3 seconds) before fading out.
+        setTimeout(function() {
+            document.body.classList.add("loaded");
+        }, 3000);
+    });
+
+    // Fallback: If page is stuck loading for 7 seconds, force open anyway
+    setTimeout(function() {
+        document.body.classList.add("loaded");
+    }, 7000);
+</script>
 <header class="main-header">
     <div class="header-container">
         
@@ -37,15 +88,15 @@
                 <li class="dropdown-trigger">
                     <a href="#">Who We Are <i class="fa-solid fa-chevron-down"></i></a>
                     <ul class="dropdown-menu">
-                        <li><a href="about.php">Our Story</a></li>
-                        <li><a href="team.php">Leadership Team</a></li>
-                        <li><a href="mission.php">Mission & vision</a></li>
+                        <li><a href="about">Our Story</a></li>
+                        <li><a href="team">Leadership Team</a></li>
+                        <li><a href="mission">Mission & vision</a></li>
                     </ul>
                 </li>
                 <li class="dropdown-trigger">
                     <a href="#">Our Work <i class="fa-solid fa-chevron-down"></i></a>
                     <ul class="dropdown-menu wide-menu">
-                        <li><a href="leadership.php">Leadership</a></li>
+                        <li><a href="leadership">Leadership</a></li>
                         <li><a href="programs.php#skills">Skills</a></li>
                         <li><a href="programs.php#coaching">Coaching</a></li>
                         <li><a href="programs.php#values">Values</a></li>
