@@ -12,6 +12,19 @@
     
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
+<style>
+    /* This overrides the animation code and forces text to show up */
+    .fade-in, 
+    .reveal-up, 
+    .hero-badge, 
+    .hero-content h1, 
+    .hero-content p, 
+    .btn-group {
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: none !important;
+    }
+</style>
 <body>
 
 <div id="preloader">
