@@ -14,21 +14,21 @@
                     Champions of values-based leadership. A registered NGO in Rwanda dedicated to empowering the next generation.
                 </p>
                 <div style="display: flex; gap: 15px;">
-                    <a href="#" style="width: 35px; height: 35px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; border-radius: 50%; color: white; transition: 0.3s;"><i class="fa-brands fa-facebook-f"></i></a>
-                    <a href="#" style="width: 35px; height: 35px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; border-radius: 50%; color: white; transition: 0.3s;"><i class="fa-brands fa-x-twitter"></i></a>
-                    <a href="#" style="width: 35px; height: 35px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; border-radius: 50%; color: white; transition: 0.3s;"><i class="fa-brands fa-linkedin-in"></i></a>
-                    <a href="#" style="width: 35px; height: 35px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; border-radius: 50%; color: white; transition: 0.3s;"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="social-btn"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="social-btn"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="#" class="social-btn"><i class="fa-brands fa-linkedin-in"></i></a>
+                    <a href="#" class="social-btn"><i class="fa-brands fa-instagram"></i></a>
                 </div>
             </div>
 
             <div style="flex: 1; min-width: 180px;">
                 <h4 style="color: white; font-family: 'Outfit', sans-serif; font-weight: 700; margin-bottom: 25px;">Quick Links</h4>
                 <ul style="list-style: none; padding: 0; margin: 0;">
-                    <li style="margin-bottom: 12px;"><a href="index.php" style="color: #cbd5e1; text-decoration: none; transition: 0.3s;">Home</a></li>
-                    <li style="margin-bottom: 12px;"><a href="about.php" style="color: #cbd5e1; text-decoration: none; transition: 0.3s;">Who We Are</a></li>
-                    <li style="margin-bottom: 12px;"><a href="programs.php" style="color: #cbd5e1; text-decoration: none; transition: 0.3s;">Our Programs</a></li>
-                    <li style="margin-bottom: 12px;"><a href="blog.php" style="color: #cbd5e1; text-decoration: none; transition: 0.3s;">Latest News</a></li>
-                    <li style="margin-bottom: 12px;"><a href="contact.php" style="color: #cbd5e1; text-decoration: none; transition: 0.3s;">Contact Us</a></li>
+                    <li style="margin-bottom: 12px;"><a href="index.php" class="footer-link">Home</a></li>
+                    <li style="margin-bottom: 12px;"><a href="about.php" class="footer-link">Who We Are</a></li>
+                    <li style="margin-bottom: 12px;"><a href="programs.php" class="footer-link">Our Programs</a></li>
+                    <li style="margin-bottom: 12px;"><a href="blog.php" class="footer-link">Latest News</a></li>
+                    <li style="margin-bottom: 12px;"><a href="contact.php" class="footer-link">Contact Us</a></li>
                 </ul>
             </div>
 
@@ -36,7 +36,7 @@
                 <h4 style="color: white; font-family: 'Outfit', sans-serif; font-weight: 700; margin-bottom: 25px;">Find Us</h4>
                 <div style="border-radius: 12px; overflow: hidden; height: 150px; border: 2px solid rgba(255,255,255,0.1);">
                     <iframe 
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3987.513075678442!2d30.0619!3d-1.9441!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19dca4258ed8e797%3A0xf3290d1e31351d1!2sKigali%2C%20Rwanda!5e0!3m2!1sen!2srw!4v1689000000000!5m2!1sen!2srw" 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15949.999999999999!2d30.0!3d-1.9!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMsKwNTQnMDAuMCJTIDMwwrAwMCwwMC4wIkU!5e0!3m2!1sen!2srw!4v1600000000000!5m2!1sen!2srw" 
                         width="100%" 
                         height="100%" 
                         style="border:0;" 
@@ -48,160 +48,73 @@
 
             <div style="flex: 1; min-width: 250px;">
                 <h4 style="color: white; font-family: 'Outfit', sans-serif; font-weight: 700; margin-bottom: 25px;">Contact</h4>
-                <div style="display: flex; gap: 15px; margin-bottom: 20px;">
-                    <i class="fa-solid fa-location-dot" style="color: #f59e0b; margin-top: 5px;"></i>
-                    <span style="color: #cbd5e1; font-size: 0.95rem;">Kigali, Rwanda</span>
-                </div>
-                <div style="display: flex; gap: 15px; margin-bottom: 20px;">
-                    <i class="fa-solid fa-phone" style="color: #f59e0b; margin-top: 5px;"></i>
-                    <span style="color: #cbd5e1; font-size: 0.95rem;">+250 782 117 222</span>
-                </div>
-                <div style="display: flex; gap: 15px; margin-bottom: 20px;">
-                    <i class="fa-solid fa-envelope" style="color: #f59e0b; margin-top: 5px;"></i>
-                    <span style="color: #cbd5e1; font-size: 0.95rem;">info@sowiseafrica.org</span>
-                </div>
+                <div class="contact-item"><i class="fa-solid fa-location-dot"></i> <span>Kigali, Rwanda</span></div>
+                <div class="contact-item"><i class="fa-solid fa-phone"></i> <span>+250 782 117 222</span></div>
+                <div class="contact-item"><i class="fa-solid fa-envelope"></i> <span>info@sowiseafrica.org</span></div>
             </div>
 
         </div>
 
         <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 20px;">
             <div style="color: #64748b; font-size: 0.9rem;">
-                &copy; <?php echo date("Y"); ?> SoW!SE Africa. All Rights Reserved.
+                © <?php echo date("Y"); ?> SoW!SE Africa. All Rights Reserved.
             </div>
             <div style="display: flex; gap: 20px;">
-                <a href="#" style="color: #64748b; text-decoration: none; font-size: 0.9rem; transition: 0.3s;">Privacy Policy</a>
-                <a href="admin/login.php" style="color: #64748b; text-decoration: none; font-size: 0.9rem; transition: 0.3s;">Admin Login</a>
+                <a href="#" class="footer-link-sm">Privacy Policy</a>
+                <a href="admin/login.php" class="footer-link-sm">Admin Login</a>
             </div>
         </div>
     </div>
 </footer>
 
 <style>
-    /* 1. BACKDROP */
-    #drawer-backdrop {
-        position: fixed !important;
-        top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 9999990;
-        opacity: 0;
-        visibility: hidden;
-        transition: 0.3s ease;
-    }
-    #drawer-backdrop.active {
-        opacity: 1;
-        visibility: visible;
-    }
+    /* Footer & General CSS Tweaks */
+    .social-btn { width: 35px; height: 35px; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; border-radius: 50%; color: white; transition: 0.3s; text-decoration: none; }
+    .social-btn:hover { background: #f59e0b; transform: translateY(-3px); }
+    .footer-link { color: #cbd5e1; text-decoration: none; transition: 0.3s; }
+    .footer-link:hover { color: #f59e0b; padding-left: 5px; }
+    .footer-link-sm { color: #64748b; text-decoration: none; font-size: 0.9rem; transition: 0.3s; }
+    .footer-link-sm:hover { color: white; }
+    .contact-item { display: flex; gap: 15px; margin-bottom: 20px; color: #cbd5e1; font-size: 0.95rem; }
+    .contact-item i { color: #f59e0b; margin-top: 3px; }
 
-    /* 2. THE WHITE DRAWER */
-    #mobile-drawer {
-        position: fixed !important;
-        top: 0; right: 0;
-        width: 85%;
-        max-width: 300px;
-        height: 100vh;
-        background: #ffffff; /* WHITE BACKGROUND */
-        z-index: 9999999;
-        transform: translateX(100%);
-        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        display: flex;
-        flex-direction: column;
-        box-shadow: -5px 0 30px rgba(0,0,0,0.15);
-    }
-    #mobile-drawer.active {
-        transform: translateX(0);
-    }
+    /* SIDEBAR STYLES */
+    #drawer-backdrop { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 9999990; opacity: 0; visibility: hidden; transition: 0.3s ease; backdrop-filter: blur(3px); }
+    #drawer-backdrop.active { opacity: 1; visibility: visible; }
 
-    /* 3. HEADER (Logo + Close) */
-    .drawer-header {
-        padding: 25px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        border-bottom: 1px solid #f1f5f9;
-    }
-    .drawer-logo {
-        font-family: 'Outfit', sans-serif;
-        font-weight: 800;
-        font-size: 1.4rem;
-        color: #0f172a;
-        text-decoration: none;
-    }
-    .drawer-close {
-        background: #f8fafc;
-        border: none;
-        color: #64748b;
-        width: 35px; height: 35px;
-        border-radius: 50%;
-        font-size: 1.2rem;
-        cursor: pointer;
-        display: flex; align-items: center; justify-content: center;
-        transition: 0.2s;
-    }
-    .drawer-close:hover {
-        background: #fee2e2;
-        color: #ef4444;
-    }
+    #mobile-drawer { position: fixed; top: 0; right: 0; width: 85%; max-width: 320px; height: 100vh; background: #ffffff; z-index: 9999999; transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); display: flex; flex-direction: column; box-shadow: -10px 0 40px rgba(0,0,0,0.1); }
+    #mobile-drawer.active { transform: translateX(0); }
 
-    /* 4. LINKS WITH ICONS */
-    .drawer-body {
-        flex: 1;
-        padding: 20px 25px;
-        overflow-y: auto;
-    }
-    .drawer-links {
-        list-style: none; padding: 0; margin: 0;
-    }
-    .drawer-links li {
-        margin-bottom: 15px;
-    }
-    .drawer-links a {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        padding: 10px 0;
-        color: #334155;
-        font-size: 1.05rem;
-        font-weight: 600;
-        text-decoration: none;
-        border-bottom: 1px solid #f8fafc;
-        transition: 0.2s;
-    }
-    .drawer-links i {
-        color: #f59e0b;
-        width: 25px;
-        text-align: center;
-    }
-    .drawer-links a:hover {
-        color: #f59e0b;
-        padding-left: 8px;
-    }
+    .drawer-header { padding: 20px 25px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #f1f5f9; background: #fff; }
+    .drawer-logo { font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.3rem; color: #0f172a; text-decoration: none; }
+    .drawer-close { background: #f8fafc; border: none; color: #64748b; width: 35px; height: 35px; border-radius: 50%; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
+    .drawer-close:hover { background: #fee2e2; color: #ef4444; }
 
-    /* 5. DRAWER FOOTER */
-    .drawer-footer {
-        padding: 25px;
-        background: #fffbeb;
-        border-top: 1px solid #fef3c7;
-    }
-    .drawer-btn {
-        display: block;
-        background: #f59e0b;
-        color: white;
-        text-align: center;
-        padding: 15px;
-        border-radius: 8px;
-        font-weight: 700;
-        text-decoration: none;
-        box-shadow: 0 4px 10px rgba(245, 158, 11, 0.3);
-        margin-bottom: 20px;
-    }
-    .drawer-socials {
-        display: flex; justify-content: center; gap: 20px;
-    }
-    .drawer-socials a {
-        color: #d97706;
-        font-size: 1.2rem; 
-        transition: 0.3s;
-    }
+    .drawer-body { flex: 1; padding: 10px 20px; overflow-y: auto; }
+    .drawer-links { list-style: none; padding: 0; margin: 0; }
+    
+    /* Main Link Styles */
+    .drawer-link-item { border-bottom: 1px solid #f1f5f9; }
+    .drawer-a { display: flex; align-items: center; justify-content: space-between; padding: 15px 5px; color: #334155; font-size: 1rem; font-weight: 600; text-decoration: none; transition: 0.2s; cursor: pointer; }
+    .drawer-a i.icon-left { color: #f59e0b; width: 25px; text-align: center; margin-right: 10px; font-size: 0.9rem; }
+    .drawer-a i.icon-arrow { color: #cbd5e1; font-size: 0.8rem; transition: 0.3s; }
+    .drawer-a:hover { color: #f59e0b; }
+
+    /* Submenu Styling */
+    .drawer-submenu { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; background: #f8fafc; border-radius: 8px; margin: 0 5px; }
+    .drawer-submenu a { display: block; padding: 12px 15px 12px 45px; color: #64748b; font-size: 0.95rem; text-decoration: none; border-bottom: 1px dashed #e2e8f0; }
+    .drawer-submenu a:last-child { border-bottom: none; }
+    .drawer-submenu a:hover { color: #0f172a; background: #f1f5f9; padding-left: 50px; transition: 0.2s; }
+
+    /* Open State for Submenu */
+    .drawer-link-item.open .drawer-submenu { max-height: 300px; margin-bottom: 10px; }
+    .drawer-link-item.open .icon-arrow { transform: rotate(180deg); color: #f59e0b; }
+
+    .drawer-footer { padding: 25px; background: #fffbeb; border-top: 1px solid #fef3c7; }
+    .drawer-btn { display: block; background: #f59e0b; color: white; text-align: center; padding: 14px; border-radius: 8px; font-weight: 700; text-decoration: none; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3); margin-bottom: 20px; transition: 0.2s; }
+    .drawer-btn:active { transform: scale(0.98); }
+    .drawer-socials { display: flex; justify-content: center; gap: 25px; }
+    .drawer-socials a { color: #d97706; font-size: 1.3rem; transition: 0.3s; }
 </style>
 
 <div id="drawer-backdrop" onclick="toggleDrawer(false)"></div>
@@ -219,11 +132,50 @@
 
     <div class="drawer-body">
         <ul class="drawer-links">
-            <li><a href="index.php"><i class="fa-solid fa-house"></i> Home</a></li>
-            <li><a href="about.php"><i class="fa-solid fa-users"></i> Who We Are</a></li>
-            <li><a href="programs.php"><i class="fa-solid fa-hand-holding-heart"></i> Our Programs</a></li>
-            <li><a href="blog.php"><i class="fa-solid fa-newspaper"></i> Our Journal</a></li>
-            <li><a href="contact.php"><i class="fa-solid fa-envelope"></i> Contact Us</a></li>
+            
+            <li class="drawer-link-item">
+                <a href="index.php" class="drawer-a">
+                    <span><i class="fa-solid fa-house icon-left"></i> Home</span>
+                </a>
+            </li>
+
+            <li class="drawer-link-item">
+                <div class="drawer-a" onclick="toggleSubmenu(this)">
+                    <span><i class="fa-solid fa-users icon-left"></i> Who We Are</span>
+                    <i class="fa-solid fa-chevron-down icon-arrow"></i>
+                </div>
+                <div class="drawer-submenu">
+                    <a href="about.php">Our Story</a>
+                    <a href="team.php">Leadership Team</a>
+                    <a href="mission.php">Mission & Vision</a>
+                </div>
+            </li>
+
+            <li class="drawer-link-item">
+                <div class="drawer-a" onclick="toggleSubmenu(this)">
+                    <span><i class="fa-solid fa-briefcase icon-left"></i> Our Work</span>
+                    <i class="fa-solid fa-chevron-down icon-arrow"></i>
+                </div>
+                <div class="drawer-submenu">
+                    <a href="leadership.php">Leadership</a>
+                    <a href="skills.php">Skills</a>
+                    <a href="coaching.php">Coaching</a>
+                    <a href="values.php">Values</a>
+                </div>
+            </li>
+
+            <li class="drawer-link-item">
+                <a href="blog.php" class="drawer-a">
+                    <span><i class="fa-solid fa-newspaper icon-left"></i> Blog</span>
+                </a>
+            </li>
+
+            <li class="drawer-link-item">
+                <a href="contact.php" class="drawer-a">
+                    <span><i class="fa-solid fa-envelope icon-left"></i> Contact</span>
+                </a>
+            </li>
+
         </ul>
     </div>
 
@@ -241,6 +193,7 @@
 </div>
 
 <script>
+    // Toggle Entire Drawer
     function toggleDrawer(show) {
         const drawer = document.getElementById('mobile-drawer');
         const backdrop = document.getElementById('drawer-backdrop');
@@ -248,7 +201,7 @@
         if(show) {
             drawer.classList.add('active');
             backdrop.classList.add('active');
-            document.body.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidden'; // Prevent scrolling bg
         } else {
             drawer.classList.remove('active');
             backdrop.classList.remove('active');
@@ -256,6 +209,13 @@
         }
     }
 
+    // Toggle Submenus (Accordion)
+    function toggleSubmenu(element) {
+        const parentItem = element.parentElement;
+        parentItem.classList.toggle('open');
+    }
+
+    // Connect to header button
     document.addEventListener("DOMContentLoaded", () => {
         const headerBtn = document.querySelector('.mobile-menu-toggle');
         if(headerBtn) {
