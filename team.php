@@ -1,4 +1,16 @@
-<?php include 'includes/header.php'; ?>
+<?php 
+require_once 'includes/db_connect.php'; // Connect to DB
+include 'includes/header.php'; 
+
+// 1. FETCH FOUNDER INFO
+$founder_sql = "SELECT * FROM founder_settings WHERE id=1";
+$founder_result = $conn->query($founder_sql);
+$founder = $founder_result->fetch_assoc();
+
+// 2. FETCH TEAM MEMBERS
+$team_sql = "SELECT * FROM team_members ORDER BY display_order ASC";
+$team_result = $conn->query($team_sql);
+?>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
@@ -19,49 +31,28 @@
         <div class="content-container split-layout reverse-desktop">
             
             <div class="image-column reveal-up">
-                <img src="https://media.licdn.com/dms/image/v2/D4D03AQFBDLpLXZyQwQ/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1709098887327?e=2147483647&v=beta&t=8F_6SA3Ehc3RRTjHUgPhjh-cVrvdbdMwg97Wxg0BVss" alt="Mr. Ibrahim Ngugi Gatimu">
+                <img src="<?php echo $founder['image_path']; ?>" alt="<?php echo $founder['name']; ?>">
                 <div class="image-accent-box left"></div>
                 
                 <div class="founder-social-box">
-                    <span>Connect with Ibrahim:</span>
+                    <span>Connect with Leadership:</span>
                     <div class="social-icons">
-                        <a href="#" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
-                        <a href="#" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
-                        <a href="mailto:director@sowiseafrica.org"><i class="fa-solid fa-envelope"></i></a>
+                        <a href="mailto:<?php echo $founder['email']; ?>"><i class="fa-solid fa-envelope"></i></a>
                     </div>
                 </div>
             </div>
 
             <div class="text-column reveal-up">
                 <span class="section-label">FOUNDER & MANAGING DIRECTOR</span>
-                <h2>Mr. Ibrahim Ngugi Gatimu</h2>
+                <h2><?php echo $founder['name']; ?></h2>
+                <h3 class="role-title" style="color: #64748b; font-size: 1.1rem; margin-bottom: 20px;"><?php echo $founder['role']; ?></h3>
                 
                 <div class="bio-intro">
-                    <p>
-                        A CPAK graduate and holder of First Class Honors in Finance, Mr. Ibrahim is a practicing member of both ICPAR and ICPAK. With over 20 years of experience, he founded SoW!SE to solve the leadership crisis in Africa.
-                    </p>
-                </div>
-
-                <div class="bio-details">
-                    <div class="detail-item">
-                        <div class="icon-box"><i class="fa-solid fa-book-journal-whills"></i></div>
-                        <div>
-                            <h4>The Author</h4>
-                            <p>He is the author of the acclaimed book, <strong>"The 13th Professional."</strong> A guide that challenges conventional thinking and empowers professionals to lead with integrity and foresight.</p>
-                        </div>
-                    </div>
-
-                    <div class="detail-item">
-                        <div class="icon-box"><i class="fa-solid fa-house-chimney-user"></i></div>
-                        <div>
-                            <h4>Family Man</h4>
-                            <p>Beyond the boardroom, Ibrahim is a devoted father of <strong>three children</strong>. His commitment to the next generation starts at home and extends to every youth in our program.</p>
-                        </div>
-                    </div>
+                    <p><?php echo nl2br($founder['bio']); ?></p>
                 </div>
 
                 <blockquote class="founder-quote">
-                    "We must review the past to learn, and look to the future to innovate."
+                    "<?php echo $founder['quote']; ?>"
                 </blockquote>
             </div>
 
@@ -77,12 +68,93 @@
             </div>
 
             <div class="team-grid">
-                
-               
+                <?php if ($team_result->num_rows > 0): ?>
+                    <?php while($member = $team_result->fetch_assoc()): ?>
+                        
+                        <div class="team-card reveal-up">
+                            <div class="team-image">
+                                <img src="<?php echo $member['image_path']; ?>" alt="<?php echo $member['name']; ?>">
+                                <div class="team-overlay">
+                                    <div class="team-bio-short">
+                                        <?php echo $member['bio']; ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="team-info">
+                                <h3><?php echo $member['name']; ?></h3>
+                                <span class="team-role"><?php echo $member['role']; ?></span>
+                            </div>
+                        </div>
 
+                    <?php endwhile; ?>
+                <?php else: ?>
+                    <p style="text-align: center; color: #64748b;">No team members added yet.</p>
+                <?php endif; ?>
             </div>
+
         </div>
     </section>
+
+    <style>
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        .team-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: 0.3s;
+        }
+        .team-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .team-image {
+            height: 300px;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+        .team-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: 0.5s;
+        }
+        .team-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.9); /* Dark Blue Overlay */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            transition: 0.3s;
+            text-align: center;
+            color: white;
+        }
+        .team-card:hover .team-overlay {
+            opacity: 1;
+        }
+        .team-info {
+            padding: 20px;
+            text-align: center;
+        }
+        .team-info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+            color: #0f172a;
+        }
+        .team-role {
+            color: #f59e0b;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+    </style>
 
     <section class="cta-section">
         <div class="content-container center-text reveal-up">

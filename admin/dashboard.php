@@ -32,6 +32,7 @@ if(isset($_GET['delete'])) {
             <div class="nav-links">
                 <a href="dashboard.php" class="active"><i class="fa-solid fa-layer-group"></i> Dashboard</a>
                 <a href="add_post.php"><i class="fa-solid fa-pen-to-square"></i> Write New</a>
+                <a href="manage_team.php"></i> Team</a>
                 <a href="../index.php" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i> View Site</a>
             </div>
 
