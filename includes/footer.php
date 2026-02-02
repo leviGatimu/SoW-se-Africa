@@ -146,7 +146,7 @@
                 </div>
                 <div class="drawer-submenu">
                     <a href="about.php">Our Story</a>
-                    <a href="team.php">Leadership Team</a>
+                    <a href="teams.php">Leadership Team</a>
                     <a href="mission.php">Mission & Vision</a>
                 </div>
             </li>

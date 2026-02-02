@@ -1,20 +1,21 @@
 <?php
+ob_start();
 session_start();
-if(!isset($_SESSION['admin'])) { header("Location: login.php"); exit(); }
+// if(!isset($_SESSION['admin'])) { header("Location: login.php"); exit(); }
+
 include '../includes/db_connect.php';
 
 // --- SMART CONTENT PARSER ---
 $imported_content = "";
 $imported_title = "";
 
-// 1. Helper: Format raw text into nice HTML
+// 1. Helper: Format raw text
 function format_as_blog_post($raw_text) {
     $lines = preg_split('/\r\n|\r|\n/', $raw_text);
     $html_output = "";
     foreach ($lines as $line) {
         $line = trim($line);
         if (empty($line)) continue;
-        // Detect Heading (Short line, no end punctuation)
         if (strlen($line) < 60 && !preg_match('/[.,;]$/', $line)) {
             $html_output .= "<h2>" . htmlspecialchars($line) . "</h2>";
         } else {
@@ -43,54 +44,25 @@ function read_docx($filename){
 function read_pdf($filename) {
     $content = file_get_contents($filename);
     $text = "";
-    
-    // Get all text objects in the PDF
     $objects = array();
     if (preg_match_all('/<<.*?>>/s', $content, $objects)) {
-        // Iterate over objects to find text streams
         foreach ($objects[0] as $object) {
-            // Check for FlateDecode (Compressed text)
             if (strpos($object, '/FlateDecode') !== false) {
                 $stream_start = strpos($content, 'stream', strpos($content, $object)) + 6;
                 $stream_end = strpos($content, 'endstream', $stream_start);
                 $stream = substr($content, $stream_start, $stream_end - $stream_start);
-                
-                // Try to decompress
                 $decoded = @gzuncompress(trim($stream));
                 if ($decoded) {
-                    // Extract text inside parentheses (...)Tj or (...) Tj
                     if(preg_match_all('/\((.*?)\) ?Tj/', $decoded, $matches)) {
-                        foreach($matches[1] as $match) {
-                            $text .= $match . " ";
-                        }
-                        $text .= "\n"; // New line per block
-                    }
-                    // Handle TJ arrays [ (text) -10 (text) ] TJ
-                    elseif(preg_match_all('/\[(.*?)\] ?TJ/', $decoded, $matches)) {
-                        foreach($matches[1] as $match) {
-                            // Clean up the array syntax
-                            $clean = preg_replace('/\((.*?)\)/', '$1', $match); // Keep text in parens
-                            $clean = preg_replace('/<.*?>/', '', $clean);       // Remove hex
-                            $clean = preg_replace('/-?\d+(\.\d+)?/', '', $clean); // Remove spacing numbers
-                            $text .= $clean . " ";
-                        }
-                        $text .= "\n";
+                        foreach($matches[1] as $match) { $text .= $match . " "; }
+                        $text .= "\n"; 
                     }
                 }
             }
         }
     }
-
-    // Fallback: If compression failed, try raw extraction (rare for modern PDFs)
-    if (empty($text)) {
-        if(preg_match_all('/\((.*?)\) ?Tj/', $content, $matches)) {
-            $text = implode(' ', $matches[1]);
-        }
-    }
-    
     return $text;
 }
-
 
 // HANDLE IMPORT
 if(isset($_POST['import_doc'])) {
@@ -100,25 +72,14 @@ if(isset($_POST['import_doc'])) {
         $raw_text = "";
         $imported_title = pathinfo($_FILES['doc_file']['name'], PATHINFO_FILENAME);
 
-        // Switch based on extension
-        if($file_ext == 'docx') {
-            $raw_text = read_docx($temp_file);
-        } 
-        elseif($file_ext == 'txt') {
-            $raw_text = file_get_contents($temp_file);
-        }
-        elseif($file_ext == 'pdf') {
-            $raw_text = read_pdf($temp_file);
-        } 
-        else {
-            $error = "File type not supported. Use .docx, .pdf, or .txt";
-        }
+        if($file_ext == 'docx') { $raw_text = read_docx($temp_file); } 
+        elseif($file_ext == 'txt') { $raw_text = file_get_contents($temp_file); }
+        elseif($file_ext == 'pdf') { $raw_text = read_pdf($temp_file); } 
+        else { $error = "File type not supported. Use .docx, .pdf, or .txt"; }
 
         if(!empty($raw_text)) {
             $imported_content = format_as_blog_post($raw_text);
             $imported_title = ucwords(str_replace(['_', '-'], ' ', $imported_title));
-        } elseif(empty($error)) {
-            $error = "Could not extract text. If this is a PDF, ensure it's not a scanned image.";
         }
     }
 }
@@ -131,7 +92,7 @@ if(isset($_POST['submit'])) {
     
     $image = ""; 
     if(isset($_FILES['image']['name']) && $_FILES['image']['name'] != "") {
-        $image = $_FILES['image']['name'];
+        $image = time() . "_" . $_FILES['image']['name'];
         $target = "../uploads/" . basename($image);
         move_uploaded_file($_FILES['image']['tmp_name'], $target);
     }
@@ -140,6 +101,7 @@ if(isset($_POST['submit'])) {
     
     if(mysqli_query($conn, $sql)) {
         header("Location: dashboard.php");
+        exit();
     } else {
         $error = "Database Error: " . mysqli_error($conn);
     }
@@ -149,7 +111,10 @@ if(isset($_POST['submit'])) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Write New Article | SoW!SE Admin</title>
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/admin-style.css">
@@ -158,66 +123,189 @@ if(isset($_POST['submit'])) {
     <script>
       tinymce.init({
         selector: '#content-editor',
-        height: 600,
+        height: 500,
         menubar: false,
-        plugins: 'link image code lists table',
+        plugins: 'link image code lists table wordcount',
         toolbar: 'undo redo | blocks | bold italic | alignleft aligncenter | bullist numlist | link table',
-        content_style: 'body { font-family:Inter,sans-serif; font-size:16px; color:#334155; line-height:1.8; padding: 20px; } h2 { color: #0f172a; margin-top: 30px; } p { margin-bottom: 20px; }'
+        content_style: 'body { font-family:Inter,sans-serif; font-size:16px; color:#334155; line-height:1.8; padding: 20px; }'
       });
     </script>
+
+    <style>
+        :root {
+            --primary: #0f172a;
+            --accent: #f59e0b;
+            --bg: #f1f5f9;
+            --text: #334155;
+        }
+        
+        * { box-sizing: border-box; }
+        body { background-color: var(--bg); font-family: 'Inter', sans-serif; margin: 0; padding: 0; color: var(--text); }
+        a { text-decoration: none; }
+
+        /* --- NAVBAR (Copied from Dashboard) --- */
+        .admin-navbar { background: white; border-bottom: 1px solid #e2e8f0; position: sticky; top: 0; z-index: 100; }
+        .nav-container { 
+            max-width: 1200px; margin: 0 auto; padding: 0 20px; height: 70px; 
+            display: flex; align-items: center; justify-content: space-between; 
+            position: relative;
+        }
+        .nav-brand { font-weight: 800; font-size: 1.2rem; color: var(--primary); display: flex; align-items: center; gap: 8px; }
+        .nav-brand span { color: var(--accent); }
+        
+        .nav-menu-wrapper { display: flex; align-items: center; gap: 30px; } 
+
+        .nav-links { display: flex; gap: 20px; }
+        .nav-links a { color: #64748b; font-weight: 500; font-size: 0.95rem; transition: 0.2s; display: flex; align-items: center; gap: 6px; }
+        .nav-links a:hover, .nav-links a.active { color: var(--primary); }
+        
+        .nav-user { display: flex; align-items: center; gap: 15px; }
+        .admin-badge { background: #e0f2fe; color: #0284c7; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
+        .btn-logout { color: #ef4444; font-weight: 600; font-size: 0.9rem; }
+
+        .mobile-toggle { display: none; background: none; border: none; font-size: 1.5rem; color: var(--primary); cursor: pointer; }
+
+        /* --- PAGE CONTENT --- */
+        .main-container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+
+        /* Import Card */
+        .import-card {
+            background: #e0f2fe; border: 1px dashed #3b82f6; border-radius: 12px; padding: 20px;
+            display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px;
+            flex-wrap: wrap; gap: 20px;
+        }
+        .import-info { display: flex; align-items: center; gap: 15px; }
+        .icon-circle { 
+            width: 50px; height: 50px; background: white; border-radius: 50%; color: #3b82f6; 
+            display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0;
+        }
+        .file-upload-btn {
+            position: relative; overflow: hidden; display: inline-block; cursor: pointer;
+            background: white; color: #3b82f6; padding: 10px 20px; border-radius: 8px; font-weight: 600; font-size: 0.9rem;
+            transition: 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.05); white-space: nowrap;
+        }
+        .file-upload-btn:hover { background: #f1f5f9; }
+        .file-upload-btn input[type=file] { position: absolute; left: 0; top: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+
+        /* Editor Card */
+        .editor-container {
+            background: white; padding: 40px; border-radius: 16px; border: 1px solid #e2e8f0; 
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        }
+        
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+        
+        .form-label { display: block; font-weight: 600; margin-bottom: 8px; color: #374151; font-size: 0.95rem; }
+        .form-control, .form-select {
+            width: 100%; padding: 12px 16px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 1rem;
+            margin-bottom: 20px; transition: border-color 0.2s; font-family: inherit;
+        }
+        .form-control:focus, .form-select:focus { outline: none; border-color: #f59e0b; box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1); }
+
+        .btn-publish {
+            background-color: #0f172a; color: white; padding: 14px 28px; border-radius: 8px; 
+            font-weight: 600; border: none; cursor: pointer; font-size: 1rem; width: 100%;
+            display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.2s;
+        }
+        .btn-publish:hover { background-color: #1e293b; }
+
+        .action-row { display: flex; gap: 15px; margin-top: 30px; }
+        .btn-discard { padding: 14px 28px; color: #64748b; font-weight: 600; text-decoration: none; border-radius: 8px; display: inline-block; text-align: center; }
+        .btn-discard:hover { background: #f1f5f9; color: #334155; }
+
+        /* --- MOBILE MEDIA QUERIES --- */
+        @media (max-width: 992px) {
+            .mobile-toggle { display: block; }
+            
+            .nav-menu-wrapper {
+                position: absolute; top: 70px; left: 0; width: 100%; background: white;
+                flex-direction: column; align-items: flex-start; padding: 0; border-bottom: 1px solid #e2e8f0;
+                max-height: 0; overflow: hidden; transition: max-height 0.3s ease-in-out; gap: 0;
+                box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+            }
+            .nav-menu-wrapper.active { max-height: 400px; }
+
+            .nav-links { flex-direction: column; width: 100%; gap: 0; }
+            .nav-links a { padding: 15px 25px; width: 100%; border-bottom: 1px solid #f8fafc; }
+            .nav-user { padding: 15px 25px; width: 100%; justify-content: space-between; background: #f8fafc; }
+            
+            /* Form Adjustments */
+            .editor-container { padding: 25px; }
+            .form-row { grid-template-columns: 1fr; gap: 0; }
+            
+            .import-card { flex-direction: column; text-align: center; }
+            .import-info { flex-direction: column; }
+            .file-upload-btn { width: 100%; text-align: center; }
+            
+            .action-row { flex-direction: column-reverse; }
+            .btn-discard { width: 100%; }
+        }
+    </style>
 </head>
-<body style="background-color: #f8fafc;">
+<body>
 
     <nav class="admin-navbar">
         <div class="nav-container">
             <div class="nav-brand">
-                <i class="fa-solid fa-feather-pointed"></i> SoW!SE <span>Admin</span>
+                <img src="../assets/img/logo.png" alt="" width="50px"></i> SoW!SE <span>Admin</span>
             </div>
-            <div class="nav-links">
-                <a href="dashboard.php"><i class="fa-solid fa-arrow-left"></i> Back to Dashboard</a>
+
+            <button class="mobile-toggle" onclick="toggleMenu()">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <div class="nav-menu-wrapper" id="navMenu">
+                <div class="nav-links">
+                    <a href="dashboard.php" ><i class="fa-solid fa-layer-group"></i> Dashboard</a>
+                    <a href="add_post.php" class="active"><i class="fa-solid fa-pen-to-square"></i> Write New</a>
+                    <a href="manage_team.php"><i class="fa-solid fa-users"></i> Team</a>
+                    <a href="../index.php" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i> View Site</a>
+                </div>
+
+                <div class="nav-user">
+                    <span class="admin-badge">Admin Logged In</span>
+                    <a href="../logout.php" class="btn-logout"><i class="fa-solid fa-power-off"></i></a>
+                </div>
             </div>
         </div>
     </nav>
 
-    <div class="main-container" style="max-width: 900px; margin-top: 40px;">
+    <div class="main-container">
 
         <div class="import-card">
-            <div class="import-header">
+            <div class="import-info">
                 <div class="icon-circle"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
-                <div class="import-text">
-                    <h3>Smart Import</h3>
-                    <p>Upload a <b>PDF</b>, <b>Word Doc</b>, or <b>Text File</b>. We'll format it for you.</p>
+                <div>
+                    <h4 style="margin:0; color:#1e3a8a;">Smart Import</h4>
+                    <small style="color:#60a5fa;">Upload a .docx or .pdf to auto-fill content.</small>
                 </div>
             </div>
-            
-            <form method="POST" enctype="multipart/form-data" class="import-form">
-                <div class="file-drop-zone">
-                    <input type="file" name="doc_file" id="doc_file" accept=".docx, .pdf, .txt" required onchange="this.form.submit()">
-                    <span class="drop-text"><i class="fa-solid fa-cloud-arrow-up"></i> Select File to Convert</span>
-                </div>
+            <form method="POST" enctype="multipart/form-data" id="importForm" style="width: 100%; max-width: 200px;">
+                <label class="file-upload-btn">
+                    <input type="file" name="doc_file" accept=".docx, .pdf, .txt" onchange="document.getElementById('importForm').submit()">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> Upload File
+                </label>
                 <input type="hidden" name="import_doc" value="1">
             </form>
-            
-            <?php if(isset($error)) echo "<div class='error-msg'><i class='fa-solid fa-triangle-exclamation'></i> $error</div>"; ?>
         </div>
 
-        <div class="card editor-card">
-            <div class="card-header">
-                <h2>Write New Article</h2>
+        <?php if(isset($error)) echo "<div style='background:#fee2e2; color:#b91c1c; padding:15px; border-radius:8px; margin-bottom:20px;'>$error</div>"; ?>
+
+        <div class="editor-container">
+            <div class="card-header" style="border-bottom: 1px solid #f1f5f9; padding-bottom: 20px; margin-bottom: 30px;">
+                <h2 style="margin:0; font-size:1.5rem; color:#0f172a;">Compose Article</h2>
             </div>
 
-            <form method="POST" enctype="multipart/form-data" class="editor-form">
+            <form method="POST" enctype="multipart/form-data">
                 
                 <div class="form-group">
-                    <label>Article Title</label>
-                    <input type="text" name="title" class="form-control lg" 
-                           placeholder="Enter title..." 
-                           value="<?php echo htmlspecialchars($imported_title); ?>" required>
+                    <label class="form-label">Article Title</label>
+                    <input type="text" name="title" class="form-control" placeholder="Enter a catchy headline..." value="<?php echo htmlspecialchars($imported_title); ?>" required>
                 </div>
 
                 <div class="form-row">
-                    <div class="form-group half">
-                        <label>Category</label>
+                    <div>
+                        <label class="form-label">Category</label>
                         <select name="category" class="form-select">
                             <option value="News & Updates">News & Updates</option>
                             <option value="Success Story">Success Story</option>
@@ -225,23 +313,20 @@ if(isset($_POST['submit'])) {
                             <option value="Announcement">Announcement</option>
                         </select>
                     </div>
-                    <div class="form-group half">
-                        <label>Featured Image</label>
-                        <div class="file-upload-box">
-                            <input type="file" name="image" id="file-input">
-                            <label for="file-input"><i class="fa-solid fa-image"></i> Choose Image</label>
-                        </div>
+                    <div>
+                        <label class="form-label">Featured Image</label>
+                        <input type="file" name="image" class="form-control" style="padding: 9px;">
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label>Content Body</label>
+                    <label class="form-label">Content Body</label>
                     <textarea id="content-editor" name="content"><?php echo $imported_content; ?></textarea>
                 </div>
 
-                <div class="form-actions">
-                    <a href="dashboard.php" class="btn-cancel">Discard</a>
-                    <button type="submit" name="submit" class="btn-primary-lg">
+                <div class="action-row">
+                    <a href="dashboard.php" class="btn-discard">Discard</a>
+                    <button type="submit" name="submit" class="btn-publish">
                         <i class="fa-solid fa-paper-plane"></i> Publish Now
                     </button>
                 </div>
@@ -249,6 +334,13 @@ if(isset($_POST['submit'])) {
             </form>
         </div>
     </div>
+
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('navMenu');
+            menu.classList.toggle('active');
+        }
+    </script>
 
 </body>
 </html>
