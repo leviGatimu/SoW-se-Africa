@@ -21,6 +21,7 @@
     .hero-content p, 
     .btn-group {
         opacity: 1 !important;
+
         visibility: visible !important;
         transform: none !important;
     }
@@ -103,7 +104,7 @@
                     <a href="#"><i class="fa-solid fa-users"></i> Who We Are <i class="fa-solid fa-chevron-down" style="font-size: 0.8em; margin-left: 5px;"></i></a>
                     <ul class="dropdown-menu">
                         <li><a href="about"><i class="fa-solid fa-book-open"></i> Our Story</a></li>
-                        <li><a href="team"><i class="fa-solid fa-user-tie"></i> Leadership Team</a></li>
+                        <li><a href="teams.php"><i class="fa-solid fa-user-tie"></i> Leadership Team</a></li>
                         <li><a href="mission"><i class="fa-solid fa-compass"></i> Mission & Vision</a></li>
                     </ul>
                 </li>
