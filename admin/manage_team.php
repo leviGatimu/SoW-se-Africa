@@ -1,24 +1,26 @@
 <?php
-include 'includes/admin_header.php'; 
-require_once '../includes/db_connect.php'; 
+ob_start(); // Prevent header errors
+session_start();
+
+// Security Check
+// if(!isset($_SESSION['admin'])) { header("Location: login.php"); exit(); }
+
+include '../includes/db_connect.php';
 
 // --- HELPER: Auto-Create Directories ---
 $base_upload_dir = "../uploads/team/";
 if (!file_exists($base_upload_dir)) { mkdir($base_upload_dir, 0777, true); }
 
-// 1. HANDLE FOUNDER UPDATE
+// 1. UPDATE FOUNDER
 if(isset($_POST['update_founder'])) {
     $name = $_POST['name'];
     $role = $_POST['role'];
     $bio = $_POST['bio'];
     $quote = $_POST['quote'];
-    
-    // Social Links
     $linkedin = $_POST['linkedin'];
     $twitter = $_POST['twitter'];
     $email = $_POST['email'];
     
-    // Image Logic
     $db_image_path = $_POST['current_image'];
     if(!empty($_FILES['image']['name'])) {
         $filename = time() . "_" . basename($_FILES['image']['name']);
@@ -27,21 +29,19 @@ if(isset($_POST['update_founder'])) {
         }
     }
 
-    // Update Query
     $stmt = $conn->prepare("UPDATE founder_settings SET name=?, role=?, bio=?, quote=?, image_path=?, linkedin=?, twitter=?, email=? WHERE id=1");
     $stmt->bind_param("ssssssss", $name, $role, $bio, $quote, $db_image_path, $linkedin, $twitter, $email);
     
     if($stmt->execute()) {
-        $success_msg = "Founder profile & socials updated!";
+        header("Location: manage_team.php?msg=updated");
+        exit();
     }
 }
 
-// 2. HANDLE ADD TEAM MEMBER
+// 2. ADD TEAM MEMBER
 if(isset($_POST['add_member'])) {
     $name = $_POST['t_name'];
     $role = $_POST['t_role'];
-    // $bio = $_POST['t_bio']; // Optional if you want bios for team members
-    
     $t_image_path = "assets/img/default-user.png"; 
 
     if(!empty($_FILES['t_image']['name'])) {
@@ -53,12 +53,14 @@ if(isset($_POST['add_member'])) {
 
     $stmt = $conn->prepare("INSERT INTO team_members (name, role, image_path) VALUES (?, ?, ?)");
     $stmt->bind_param("sss", $name, $role, $t_image_path);
+    
     if($stmt->execute()) {
-        $success_msg = "New team member added!";
+        header("Location: manage_team.php?msg=added");
+        exit();
     }
 }
 
-// 3. HANDLE DELETE MEMBER
+// 3. DELETE MEMBER
 if(isset($_GET['delete'])) {
     $id = intval($_GET['delete']);
     $conn->query("DELETE FROM team_members WHERE id=$id");
@@ -71,149 +73,205 @@ $founder = $conn->query("SELECT * FROM founder_settings WHERE id=1")->fetch_asso
 $team = $conn->query("SELECT * FROM team_members ORDER BY display_order ASC");
 ?>
 
-<div class="container py-5">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Manage Team | SoW!SE Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/admin-style.css">
     
-    <?php if(isset($success_msg)): ?>
-        <div class="alert alert-success"><?php echo $success_msg; ?></div>
-    <?php endif; ?>
+    <style>
+        /* Custom tweaks to match your dashboard grid */
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 30px;
+            margin-top: 20px;
+        }
+        @media (max-width: 992px) { .settings-grid { grid-template-columns: 1fr; } }
+        
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: 500; margin-bottom: 8px; color: #374151; }
+        .form-control {
+            width: 100%; padding: 10px 15px; border: 1px solid #e2e8f0; border-radius: 8px;
+            font-family: inherit; font-size: 0.95rem;
+        }
+        .form-control:focus { outline: 2px solid #f59e0b; border-color: transparent; }
+        
+        .profile-preview {
+            width: 100px; height: 100px; border-radius: 50%; object-fit: cover;
+            border: 3px solid #fff; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin: 0 auto 15px; display: block;
+        }
+        
+        /* Modal Styles since we aren't using Bootstrap JS */
+        .modal {
+            display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.5); align-items: center; justify-content: center;
+        }
+        .modal.active { display: flex; }
+        .modal-content {
+            background: white; padding: 30px; border-radius: 12px; width: 100%; max-width: 500px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .modal-header { display: flex; justify-content: space-between; margin-bottom: 20px; }
+        .close-modal { background: none; border: none; font-size: 1.5rem; cursor: pointer; }
+    </style>
+</head>
+<body style="background-color: #f1f5f9;">
 
-    <div class="row">
-        <div class="col-lg-5">
-            <div class="admin-card">
-                <div class="card-header-custom">
-                    <h5><i class="fa-solid fa-user-tie me-2" style="color: #f59e0b;"></i> Founder Profile</h5>
+    <nav class="admin-navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fa-solid fa-feather-pointed"></i> SoW!SE <span>Admin</span>
+            </div>
+            <div class="nav-links">
+                <a href="dashboard.php"><i class="fa-solid fa-layer-group"></i> Dashboard</a>
+                <a href="add_post.php"><i class="fa-solid fa-pen-to-square"></i> Write New</a>
+                <a href="manage_team.php" class="active"><i class="fa-solid fa-users"></i> Team</a>
+                <a href="../index.php" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i> View Site</a>
+            </div>
+            <div class="nav-user">
+                <span class="admin-badge">Admin</span>
+                <a href="../logout.php" class="btn-logout"><i class="fa-solid fa-power-off"></i> Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-container">
+
+        <header class="page-header">
+            <div>
+                <h1>Team Management</h1>
+                <p>Manage the founder profile and add team members.</p>
+            </div>
+            <button onclick="openModal()" class="btn-primary"><i class="fa-solid fa-plus"></i> Add Member</button>
+        </header>
+
+        <div class="settings-grid">
+            
+            <div class="table-card">
+                <div class="card-header">
+                    <h3>Founder Profile</h3>
                 </div>
-                <div class="p-4">
+                <div style="padding: 25px;">
                     <form method="POST" enctype="multipart/form-data">
                         
-                        <div class="mb-3">
-                            <label class="form-label">Profile Photo</label>
-                            <div class="d-flex align-items-center gap-3">
-                                <img src="../<?php echo $founder['image_path']; ?>" class="rounded-circle shadow-sm" style="width:60px; height:60px; object-fit:cover;">
-                                <input type="file" name="image" class="form-control form-control-sm">
-                                <input type="hidden" name="current_image" value="<?php echo $founder['image_path']; ?>">
-                            </div>
+                        <div class="form-group" style="text-align: center;">
+                            <img src="../<?php echo $founder['image_path']; ?>" class="profile-preview">
+                            <input type="file" name="image" style="font-size: 0.9rem;">
+                            <input type="hidden" name="current_image" value="<?php echo $founder['image_path']; ?>">
                         </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">Full Name</label>
+                        <div class="form-group">
+                            <label>Full Name</label>
                             <input type="text" name="name" class="form-control" value="<?php echo htmlspecialchars($founder['name']); ?>">
                         </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">Role</label>
+                        <div class="form-group">
+                            <label>Role / Title</label>
                             <input type="text" name="role" class="form-control" value="<?php echo htmlspecialchars($founder['role']); ?>">
                         </div>
 
-                        <div class="mb-3 p-3 bg-light rounded border">
-                            <label class="form-label text-muted small text-uppercase fw-bold mb-3">Social Connections</label>
-                            
-                            <div class="input-group mb-2">
-                                <span class="input-group-text"><i class="fa-brands fa-linkedin"></i></span>
-                                <input type="text" name="linkedin" class="form-control" placeholder="LinkedIn URL" value="<?php echo htmlspecialchars($founder['linkedin'] ?? ''); ?>">
-                            </div>
-
-                            <div class="input-group mb-2">
-                                <span class="input-group-text"><i class="fa-brands fa-x-twitter"></i></span>
-                                <input type="text" name="twitter" class="form-control" placeholder="Twitter URL" value="<?php echo htmlspecialchars($founder['twitter'] ?? ''); ?>">
-                            </div>
-
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fa-solid fa-envelope"></i></span>
-                                <input type="email" name="email" class="form-control" placeholder="Email Address" value="<?php echo htmlspecialchars($founder['email'] ?? ''); ?>">
-                            </div>
+                        <div style="background: #f8fafc; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #e2e8f0;">
+                            <label style="font-size: 0.8rem; text-transform: uppercase; color: #64748b; font-weight: 700;">Social Links</label>
+                            <input type="text" name="linkedin" class="form-control" placeholder="LinkedIn URL" value="<?php echo htmlspecialchars($founder['linkedin'] ?? ''); ?>" style="margin-top: 10px;">
+                            <input type="text" name="twitter" class="form-control" placeholder="Twitter URL" value="<?php echo htmlspecialchars($founder['twitter'] ?? ''); ?>" style="margin-top: 10px;">
+                            <input type="email" name="email" class="form-control" placeholder="Email Address" value="<?php echo htmlspecialchars($founder['email'] ?? ''); ?>" style="margin-top: 10px;">
                         </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">Biography</label>
+                        <div class="form-group">
+                            <label>Biography</label>
                             <textarea name="bio" class="form-control" rows="5"><?php echo htmlspecialchars($founder['bio']); ?></textarea>
                         </div>
 
-                        <div class="mb-4">
-                            <label class="form-label">Key Quote</label>
+                        <div class="form-group">
+                            <label>Key Quote</label>
                             <textarea name="quote" class="form-control" rows="2"><?php echo htmlspecialchars($founder['quote']); ?></textarea>
                         </div>
 
-                        <button type="submit" name="update_founder" class="btn btn-primary w-100">Save Changes</button>
+                        <button type="submit" name="update_founder" class="btn-primary" style="width: 100%;">Save Changes</button>
                     </form>
                 </div>
             </div>
-        </div>
 
-        <div class="col-lg-7">
-            <div class="admin-card">
-                <div class="card-header-custom">
-                    <h5><i class="fa-solid fa-users me-2" style="color: #f59e0b;"></i> Team Members</h5>
-                    <button class="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#addMemberModal">
-                        <i class="fa-solid fa-plus me-1"></i> Add Member
-                    </button>
+            <div class="table-card">
+                <div class="card-header">
+                    <h3>Team Directory</h3>
                 </div>
-                <div class="p-0">
-                    <table class="table table-hover team-table mb-0">
+                <div class="table-responsive">
+                    <table>
                         <thead>
                             <tr>
-                                <th class="ps-4">Profile</th>
+                                <th width="60">Photo</th>
                                 <th>Name & Role</th>
-                                <th class="text-end pe-4">Actions</th>
+                                <th class="text-right">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php if ($team->num_rows > 0): ?>
                                 <?php while($row = $team->fetch_assoc()): ?>
-                                <tr class="align-middle">
-                                    <td class="ps-4">
-                                        <img src="../<?php echo $row['image_path']; ?>" class="rounded-circle shadow-sm" style="width:40px; height:40px; object-fit:cover;" onerror="this.src='../assets/img/default-user.png'">
+                                <tr>
+                                    <td>
+                                        <img src="../<?php echo $row['image_path']; ?>" style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover;" onerror="this.src='../assets/img/default-user.png'">
                                     </td>
                                     <td>
-                                        <div class="fw-bold text-dark"><?php echo $row['name']; ?></div>
-                                        <div class="text-muted small"><?php echo $row['role']; ?></div>
+                                        <div style="font-weight: 600; color: #1e293b;"><?php echo $row['name']; ?></div>
+                                        <span class="badge"><?php echo $row['role']; ?></span>
                                     </td>
-                                    <td class="text-end pe-4">
-                                        <a href="?delete=<?php echo $row['id']; ?>" class="btn btn-outline-danger btn-sm rounded-pill px-3" onclick="return confirm('Delete this member?')">
-                                            <i class="fa-solid fa-trash-can"></i>
+                                    <td class="text-right">
+                                        <a href="manage_team.php?delete=<?php echo $row['id']; ?>" class="btn-icon delete" onclick="return confirm('Remove this member?')">
+                                            <i class="fa-solid fa-trash"></i>
                                         </a>
                                     </td>
                                 </tr>
                                 <?php endwhile; ?>
                             <?php else: ?>
-                                <tr><td colspan="3" class="text-center py-5 text-muted">No team members found.</td></tr>
+                                <tr><td colspan="3" style="text-align: center; padding: 30px; color: #64748b;">No team members found.</td></tr>
                             <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
             </div>
+
         </div>
     </div>
-</div>
 
-<div class="modal fade" id="addMemberModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <form method="POST" enctype="multipart/form-data" class="modal-content">
-            <div class="modal-header bg-dark text-white">
-                <h5 class="modal-title">Add Team Member</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+    <div id="memberModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Team Member</h3>
+                <button onclick="closeModal()" class="close-modal">&times;</button>
             </div>
-            <div class="modal-body p-4">
-                <div class="mb-3">
-                    <label class="form-label">Name</label>
+            <form method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label>Name</label>
                     <input type="text" name="t_name" class="form-control" required>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label">Role</label>
+                <div class="form-group">
+                    <label>Role</label>
                     <input type="text" name="t_role" class="form-control" required>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label">Photo</label>
+                <div class="form-group">
+                    <label>Photo</label>
                     <input type="file" name="t_image" class="form-control">
                 </div>
-            </div>
-            <div class="modal-footer bg-light">
-                <button type="submit" name="add_member" class="btn btn-primary px-4">Add Member</button>
-            </div>
-        </form>
+                <button type="submit" name="add_member" class="btn-primary" style="width: 100%;">Add Member</button>
+            </form>
+        </div>
     </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function openModal() { document.getElementById('memberModal').classList.add('active'); }
+        function closeModal() { document.getElementById('memberModal').classList.remove('active'); }
+        
+        // Close modal if clicking outside
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('memberModal')) {
+                closeModal();
+            }
+        }
+    </script>
 </body>
 </html>
