@@ -155,7 +155,7 @@ include 'includes/header.php';
     <section class="journal-hero">
         <div class="content-container" style="position: relative; z-index: 2;">
             <span style="color: var(--accent); font-weight: 700; letter-spacing: 2px; font-size: 0.9rem; text-transform: uppercase; display: block; margin-bottom: 10px; margin-top: 60px;">Our Journal</span>
-            <h1 style="font-size: 3.5rem; font-weight: 800; margin: 0; letter-spacing: -1px;">Stories & Insights</h1>
+            <h1 style="font-size: 3.5rem; font-weight: 800; margin: 0; letter-spacing: -1px; color:white;">Stories & Insights</h1>
         </div>
     </section>
 

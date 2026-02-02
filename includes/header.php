@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SoW!SE AFRICA | Values-Based Leadership</title>
+    <title>SoW!SE AFRICA </title>
     
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -11,6 +11,10 @@
     <link rel="icon" type="image/png" href="assets/img/logo.png">
     
     <link rel="stylesheet" href="assets/css/style.css">
+   <?php 
+    $base_path = (basename(dirname($_SERVER['PHP_SELF'])) == 'admin') ? '../' : ''; 
+?>
+<link rel="icon" type="image/png" href="<?php echo $base_path; ?>assets/img/logo.png">
 </head>
 <style>
     /* This overrides the animation code and forces text to show up */
