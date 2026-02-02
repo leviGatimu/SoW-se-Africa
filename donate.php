@@ -230,7 +230,7 @@
 
     <section class="donate-hero">
         <div class="content-container">
-            <span class="hero-badge">Make a Difference</span>
+            <span class="hero-badge" style="margin-top: 80px;">Make a Difference</span>
             <h1 style="font-size: 3rem; font-weight: 800; margin-bottom: 15px;">Invest in Future Leaders</h1>
             <p style="font-size: 1.2rem; color: #cbd5e1; max-width: 600px; margin: 0 auto;">
                 Your contribution equips African youth with the values, skills, and mentorship they need to transform their communities.

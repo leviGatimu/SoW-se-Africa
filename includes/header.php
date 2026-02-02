@@ -119,7 +119,7 @@
                         <li><a href="leadership"><i class="fa-solid fa-scale-balanced"></i> Leadership</a></li>
                         <li><a href="skills.php"><i class="fa-solid fa-brain"></i> Skills</a></li>
                         <li><a href="coaching.php"><i class="fa-solid fa-user-group"></i> Coaching</a></li>
-                        <li><a href="programs.php#values"><i class="fa-solid fa-heart"></i> Values</a></li>
+                 
                     </ul>
                 </li>
                 
