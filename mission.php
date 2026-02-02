@@ -229,7 +229,7 @@
 
             <div class="split-image reveal-up">
                 <div class="blob-bg blob-blue"></div>
-                <img src="https://images.unsplash.com/photo-1531206715517-5c0ba140840f?q=80&w=800&auto=format&fit=crop" alt="Vision of Future Africa">
+                <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Vision of Future Africa">
             </div>
 
         </div>
